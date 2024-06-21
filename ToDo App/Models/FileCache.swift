@@ -43,7 +43,7 @@ class FileCache {
         items.insert(task)
     }
     
-    func deleteTask(with id: UUID) {
+    func deleteTask(with id: String) {
         for element in items {
             if element.id == id {
                 items.remove(element)
