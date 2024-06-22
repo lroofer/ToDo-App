@@ -14,29 +14,25 @@ extension TodoItem {
         case wrongPropertyIn(row: Int, propertyName: String)
     }
     
-    func parseDateFrom(string: String, indexOfRow index: Int, propertyName: String) throws -> Date? {
+    private static func parseDateFrom(string: String, indexOfRow index: Int, propertyName: String) throws -> Date? {
         if string == "" {
             return nil
         }
-        let dateFormatter = DateFormatter()
-        guard let date = dateFormatter.date(from: string) else {
+        guard let date = Date.getDate(fromStringLocale: string) else {
             throw CSVParsingError.wrongPropertyIn(row: index, propertyName: propertyName)
         }
         return date
     }
     
-    func parseBoolFrom(string: String, indexOfRow index: Int, propertyName: String) throws -> Bool {
-        switch (string) {
-        case "true":
-            return true
-        case "false":
-            return false
-        default:
-            throw CSVParsingError.wrongPropertyIn(row: index, propertyName: propertyName)
+    private static func parseBoolFrom(string: String, indexOfRow index: Int, propertyName: String) throws -> Bool {
+        if let boolValue = Bool.getBool(fromString: string) {
+            return boolValue
         }
+        throw CSVParsingError.wrongPropertyIn(row: index, propertyName: propertyName)
+        
     }
     
-    func getSetOfItemsFrom(csvFile url: URL, linesOfHeader: Int = 0) throws -> Set<TodoItem> {
+    static func getSetOfItemsFrom(csvFile url: URL, linesOfHeader: Int = 0) throws -> Set<TodoItem> {
         guard let csvFile = try? String(contentsOf: url, encoding: .utf8) else {
             throw CSVParsingError.cannotReadCsvFile
         }
@@ -55,6 +51,7 @@ extension TodoItem {
                 } else {
                     if char == "\"" {
                         areQuotesOpen.toggle()
+                        continue
                     }
                     currentValue.append(char)
                 }
@@ -68,7 +65,7 @@ extension TodoItem {
             }
             
             
-            items.insert(TodoItem(id: values[0].isEmpty ? nil : values[0], text: values[1], priority: priority, deadline: try parseDateFrom(string: values[3], indexOfRow: indexOfRow, propertyName: "deadline"), completed: try parseBoolFrom(string: values[4], indexOfRow: indexOfRow, propertyName: "completed"), creationDate: try parseDateFrom(string: values[5], indexOfRow: indexOfRow, propertyName: "creationDate") ?? Date(), lastChangeDate: try parseDateFrom(string: values[6], indexOfRow: indexOfRow, propertyName: "lastChangeDate")))
+            items.insert(TodoItem(id: values[0].isEmpty ? nil : values[0], text: values[1], priority: priority, deadline: try parseDateFrom(string: values[3], indexOfRow: indexOfRow, propertyName: "deadline"), completed: try parseBoolFrom(string: values[4], indexOfRow: indexOfRow, propertyName: "completed"), creationDate: try parseDateFrom(string: values[5], indexOfRow: indexOfRow, propertyName: "creationDate") ?? Date.now, lastChangeDate: try parseDateFrom(string: values[6], indexOfRow: indexOfRow, propertyName: "lastChangeDate")))
         }
         return items
     }

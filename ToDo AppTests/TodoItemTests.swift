@@ -10,7 +10,7 @@ import Foundation
 @testable import ToDo_App
 
 struct TodoItemTests {
-
+    
     @Test("Convertion")
     func testPriorityCalculation() async throws {
         #expect(TodoItem.PriorityChoices.getPriorityFrom(string: "") == .ordinary)
@@ -63,6 +63,26 @@ struct TodoItemTests {
         #expect(itemGet!.creationDate.description == item.creationDate.description)
         #expect(itemGet!.lastChangeDate?.description == item.lastChangeDate?.description)
         #expect(itemGet!.completed == item.completed)
+    }
+    
+    @Test("CSV unpacking")
+    func testCsvDecoding() async throws {
+        let fileUrl = Bundle.main.url(forResource: "test", withExtension: "csv")!
+        let items = try TodoItem.getSetOfItemsFrom(csvFile: fileUrl, linesOfHeader: 1)
+        #expect(items.count == 2)
+        for element in items {
+            if element.id == "uu1" {
+                #expect(element.text == "Test message, afterwards")
+                #expect(element.priority == .low)
+                #expect(element.deadline?.ISO8601Format() == "2016-04-14T10:44:00Z")
+                #expect(!element.completed)
+                #expect(element.lastChangeDate?.ISO8601Format() == "2017-04-14T10:44:00Z")
+            } else {
+                #expect(element.text == "Wrong message")
+                #expect(element.completed)
+            }
+            #expect(element.creationDate.ISO8601Format() == "2016-04-14T10:44:00Z")
+        }
     }
     
 }

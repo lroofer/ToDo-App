@@ -18,16 +18,6 @@ extension TodoItem {
         case lastChangedDate = "lastChangedDate"
     }
     
-    private static func convertToBool(string: String?) -> Bool? {
-        if string == "true" {
-            return true
-        }
-        if string == "false" {
-            return false
-        }
-        return nil
-    }
-    
     private static func convertToData(json: Any) -> Data? {
         if let json = json as? String {
             return Data(json.utf8)
@@ -49,7 +39,7 @@ extension TodoItem {
         }
         let priority = PriorityChoices.getPriorityFrom(string: getValue(.priority) as? String ?? "")!
         let deadline = Date.getDate(fromStringLocale: getValue(.deadline) as? String)
-        guard let completed = convertToBool (string: getValue(.completed) as? String) else {
+        guard let completed = Bool.getBool(fromString: getValue(.completed) as? String) else {
             return nil
         }
         let creationDate = Date.getDate(fromStringLocale: getValue(.creationDate) as? String) ?? Date.now
@@ -84,5 +74,18 @@ extension Date {
             return nil
         }
         return ISO8601DateFormatter().date(from: date!)
+    }
+}
+
+extension Bool {
+    static func getBool(fromString string: String?) -> Bool? {
+        switch(string) {
+        case "true":
+            return true
+        case "false":
+            return false
+        default:
+            return nil
+        }
     }
 }
