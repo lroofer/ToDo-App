@@ -18,6 +18,7 @@ extension TodoItem {
         case lastChangedDate = "lastChangedDate"
     }
     
+    /// The method detects the given type and the converts it to the Data format.
     private static func convertToData(json: Any) -> Data? {
         if let json = json as? String {
             return Data(json.utf8)
@@ -25,6 +26,7 @@ extension TodoItem {
         return json as? Data
     }
     
+    /// Generates a new task from the dictionary of values.
     init? (dict: [String: Any]) {
         let getValue = { (identifier: TodoItemStoredFields) in dict[identifier.rawValue]
         }

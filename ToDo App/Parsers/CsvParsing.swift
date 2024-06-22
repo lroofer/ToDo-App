@@ -32,6 +32,7 @@ extension TodoItem {
         
     }
     
+    /// returns the set of items decoded from the csv file.
     static func getSetOfItemsFrom(csvFile url: URL, linesOfHeader: Int = 0) throws -> Set<TodoItem> {
         guard let csvFile = try? String(contentsOf: url, encoding: .utf8) else {
             throw CSVParsingError.cannotReadCsvFile
