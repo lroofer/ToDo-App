@@ -13,6 +13,8 @@
 		0A2C5B592C263B33007D8889 /* test_2.json in Resources */ = {isa = PBXBuildFile; fileRef = 0A2C5B582C263B2E007D8889 /* test_2.json */; };
 		0A2C5B5A2C26415B007D8889 /* test_2.json in Resources */ = {isa = PBXBuildFile; fileRef = 0A2C5B582C263B2E007D8889 /* test_2.json */; };
 		0A2C5B5B2C26415B007D8889 /* test_1.json in Resources */ = {isa = PBXBuildFile; fileRef = 0A2C5B562C263A8E007D8889 /* test_1.json */; };
+		0A2C5B5D2C26595C007D8889 /* test.csv in Resources */ = {isa = PBXBuildFile; fileRef = 0A2C5B5C2C265957007D8889 /* test.csv */; };
+		0A2C5B5E2C26595C007D8889 /* test.csv in Resources */ = {isa = PBXBuildFile; fileRef = 0A2C5B5C2C265957007D8889 /* test.csv */; };
 		0A39EE652C21A95400DD14AE /* ToDo_AppApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A39EE642C21A95400DD14AE /* ToDo_AppApp.swift */; };
 		0A39EE672C21A95400DD14AE /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A39EE662C21A95400DD14AE /* ContentView.swift */; };
 		0A39EE692C21A95500DD14AE /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 0A39EE682C21A95500DD14AE /* Assets.xcassets */; };
@@ -47,6 +49,7 @@
 		0A2C5B522C262A22007D8889 /* TodoItemTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TodoItemTests.swift; sourceTree = "<group>"; };
 		0A2C5B562C263A8E007D8889 /* test_1.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = test_1.json; sourceTree = "<group>"; };
 		0A2C5B582C263B2E007D8889 /* test_2.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = test_2.json; sourceTree = "<group>"; };
+		0A2C5B5C2C265957007D8889 /* test.csv */ = {isa = PBXFileReference; lastKnownFileType = text; path = test.csv; sourceTree = "<group>"; };
 		0A39EE612C21A95400DD14AE /* ToDo App.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "ToDo App.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		0A39EE642C21A95400DD14AE /* ToDo_AppApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ToDo_AppApp.swift; sourceTree = "<group>"; };
 		0A39EE662C21A95400DD14AE /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
@@ -108,6 +111,7 @@
 		0A2C5B552C263A75007D8889 /* AssetsTesting */ = {
 			isa = PBXGroup;
 			children = (
+				0A2C5B5C2C265957007D8889 /* test.csv */,
 				0A2C5B582C263B2E007D8889 /* test_2.json */,
 				0A2C5B562C263A8E007D8889 /* test_1.json */,
 			);
@@ -280,6 +284,7 @@
 			files = (
 				0A2C5B5A2C26415B007D8889 /* test_2.json in Resources */,
 				0A2C5B5B2C26415B007D8889 /* test_1.json in Resources */,
+				0A2C5B5D2C26595C007D8889 /* test.csv in Resources */,
 				0A39EE6C2C21A95500DD14AE /* Preview Assets.xcassets in Resources */,
 				0A39EE692C21A95500DD14AE /* Assets.xcassets in Resources */,
 			);
@@ -291,6 +296,7 @@
 			files = (
 				0A2C5B592C263B33007D8889 /* test_2.json in Resources */,
 				0A2C5B572C263A98007D8889 /* test_1.json in Resources */,
+				0A2C5B5E2C26595C007D8889 /* test.csv in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
