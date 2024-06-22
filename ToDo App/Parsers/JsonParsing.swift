@@ -14,9 +14,21 @@ extension TodoItem {
         case priority = "priority"
         case deadline = "deadline"
         case completed = "completed"
+        case creationDate = "creationDate"
+        case lastChangedDate = "lastChangedDate"
     }
     
-    static func convertToData(json: Any) -> Data? {
+    private static func convertToBool(string: String?) -> Bool? {
+        if string == "true" {
+            return true
+        }
+        if string == "false" {
+            return false
+        }
+        return nil
+    }
+    
+    private static func convertToData(json: Any) -> Data? {
         if let json = json as? String {
             return Data(json.utf8)
         }
@@ -25,22 +37,25 @@ extension TodoItem {
     
     static func parse(json: Any) -> TodoItem? {
         guard let jsonData = convertToData(json: json),
-                let jsonObject = try? JSONSerialization.jsonObject(with: jsonData) as? [String: Any] else {
+              let jsonObject = try? JSONSerialization.jsonObject(with: jsonData) as? [String: Any] else {
             return nil
         }
         let getValue = { (identifier: TodoItemStoredFields) in jsonObject[identifier.rawValue]
         }
         
-        let id = (getValue(.id) as? UUID) ?? UUID()
+        let id = (getValue(.id) as? String) ?? UUID().uuidString
         guard let text = getValue(.text) as? String else {
             return nil
         }
-        let priority = (getValue(.priority) as? PriorityChoices) ?? .ordinary
-        let deadline = getValue(.deadline) as? Date
-        guard let completed = getValue(.completed) as? Bool else {
+        let priority = PriorityChoices.getPriorityFrom(string: getValue(.priority) as? String ?? "")!
+        let deadline = Date.getDate(fromStringLocale: getValue(.deadline) as? String)
+        guard let completed = convertToBool (string: getValue(.completed) as? String) else {
             return nil
         }
-        return TodoItem(id: id, text: text, priority: priority, deadline: deadline, completed: completed, creationDate: Date.now, lastChangeDate: nil)
+        let creationDate = Date.getDate(fromStringLocale: getValue(.creationDate) as? String) ?? Date.now
+        let lastChangeDate = Date.getDate(fromStringLocale: getValue(.lastChangedDate) as? String)
+        
+        return TodoItem(id: id, text: text, priority: priority, deadline: deadline, completed: completed, creationDate: creationDate, lastChangeDate: lastChangeDate)
     }
     
     var json: Any {
@@ -49,12 +64,25 @@ extension TodoItem {
         setValue(.id, id)
         setValue(.text, text)
         if priority != .ordinary {
-            setValue(.priority, priority)
+            setValue(.priority, priority.rawValue)
         }
         if deadline != nil {
-            setValue(.deadline, deadline!)
+            setValue(.deadline, deadline!.ISO8601Format())
         }
-        setValue(.completed, completed)
+        setValue(.completed, completed ? "true" : "false")
+        setValue(.creationDate, creationDate.ISO8601Format())
+        if lastChangeDate != nil {
+            setValue(.lastChangedDate, lastChangeDate!.ISO8601Format())
+        }
         return (try? JSONSerialization.data(withJSONObject: object)) ?? Data()
+    }
+}
+
+extension Date {
+    static func getDate(fromStringLocale date: String?) -> Date? {
+        if date == nil {
+            return nil
+        }
+        return ISO8601DateFormatter().date(from: date!)
     }
 }
