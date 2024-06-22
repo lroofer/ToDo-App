@@ -8,45 +8,48 @@
 import Foundation
 
 class FileCache {
-    private(set) var items: Set<TodoItem>
+    private(set) var tasks: Set<TodoItem>
     
     init () {
-        items = Set<TodoItem>()
+        tasks = Set<TodoItem>()
     }
     
+    /// Load all the tasks from the file.
     init? (contentsOf url: URL) {
         guard let jsonData = try? Data(contentsOf: url), let jsonObject = try? JSONSerialization.jsonObject(with: jsonData) as? [[String: Any]] else {
             return nil
         }
-        items = Set<TodoItem>()
+        tasks = Set<TodoItem>()
         for dataObject in jsonObject {
             if let item = TodoItem(dict: dataObject) {
-                items.insert(item)
+                tasks.insert(item)
             }
         }
     }
     
+    /// Prepare and encode data to the JSON.
     private func exportAllData() -> Data? {
         var data = [[String : Any]]()
-        for element in items {
+        for element in tasks {
             data.append(element.dict)
         }
         return try? JSONSerialization.data(withJSONObject: data)
     }
     
     func addNew(task: TodoItem) {
-        items.insert(task)
+        tasks.insert(task)
     }
     
     func deleteTask(with id: String) {
-        for element in items {
+        for element in tasks {
             if element.id == id {
-                items.remove(element)
+                tasks.remove(element)
                 return
             }
         }
     }
     
+    /// Exports encoded data into the given file.
     func saveAllData(to file: URL) throws {
         let data = exportAllData() ?? Data()
         try data.write(to: file)
