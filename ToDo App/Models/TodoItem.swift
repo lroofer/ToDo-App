@@ -9,9 +9,9 @@ import Foundation
 
 struct TodoItem: Hashable {
     enum PriorityChoices: String {
-        case low = "low"
-        case ordinary = "ordinary"
-        case high = "high"
+        case low
+        case ordinary
+        case high
         static func getPriorityFrom(string type: String) -> PriorityChoices? {
             switch(type) {
             case PriorityChoices.low.rawValue:
