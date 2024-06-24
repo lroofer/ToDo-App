@@ -9,13 +9,13 @@ import Foundation
 
 extension TodoItem {
     enum TodoItemStoredFields: String {
-        case id = "id"
-        case text = "text"
-        case priority = "priority"
-        case deadline = "deadline"
-        case completed = "completed"
-        case creationDate = "creationDate"
-        case lastChangedDate = "lastChangedDate"
+        case id
+        case text
+        case importance
+        case deadline
+        case done
+        case createdTime = "created_at"
+        case changedTime = "changed_at"
     }
     
     /// The method detects the given type and the converts it to the Data format.
@@ -36,14 +36,14 @@ extension TodoItem {
             return nil
         }
         self.text = text
-        priority = PriorityChoices.getPriorityFrom(string: getValue(.priority) as? String ?? "")!
+        importance = PriorityChoices.getPriorityFrom(string: getValue(.importance) as? String ?? "")!
         deadline = Date.getDate(fromStringLocale: getValue(.deadline) as? String)
-        guard let completed = Bool.getBool(fromString: getValue(.completed) as? String) else {
+        guard let completed = Bool.getBool(fromString: getValue(.done) as? String) else {
             return nil
         }
-        self.completed = completed
-        creationDate = Date.getDate(fromStringLocale: getValue(.creationDate) as? String) ?? Date.now
-        lastChangeDate = Date.getDate(fromStringLocale: getValue(.lastChangedDate) as? String)
+        self.done = completed
+        createdTime = Date.getDate(fromStringLocale: getValue(.createdTime) as? String) ?? Date.now
+        changedTime = Date.getDate(fromStringLocale: getValue(.changedTime) as? String)
     }
     
     static func parse(json: Any) -> TodoItem? {
@@ -59,16 +59,16 @@ extension TodoItem {
         let setValue = {(identifier: TodoItemStoredFields, value: Any) in object[identifier.rawValue] = value}
         setValue(.id, id)
         setValue(.text, text)
-        if priority != .ordinary {
-            setValue(.priority, priority.rawValue)
+        if importance != .basic {
+            setValue(.importance, importance.rawValue)
         }
         if deadline != nil {
             setValue(.deadline, deadline!.ISO8601Format())
         }
-        setValue(.completed, completed ? "true" : "false")
-        setValue(.creationDate, creationDate.ISO8601Format())
-        if lastChangeDate != nil {
-            setValue(.lastChangedDate, lastChangeDate!.ISO8601Format())
+        setValue(.done, done ? "true" : "false")
+        setValue(.createdTime, createdTime.ISO8601Format())
+        if changedTime != nil {
+            setValue(.changedTime, changedTime!.ISO8601Format())
         }
         return object
     }

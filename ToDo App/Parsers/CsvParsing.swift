@@ -11,24 +11,24 @@ extension TodoItem {
     enum CSVParsingError: Error {
         case cannotReadCsvFile
         case incorrectSignatureIn(row: Int)
-        case wrongPropertyIn(row: Int, propertyName: String)
+        case wrongPropertyIn(row: Int, property: TodoItemStoredFields)
     }
     
-    private static func parseDateFrom(string: String, indexOfRow index: Int, propertyName: String) throws -> Date? {
+    private static func parseDateFrom(string: String, indexOfRow index: Int, property: TodoItemStoredFields) throws -> Date? {
         if string == "" {
             return nil
         }
         guard let date = Date.getDate(fromStringLocale: string) else {
-            throw CSVParsingError.wrongPropertyIn(row: index, propertyName: propertyName)
+            throw CSVParsingError.wrongPropertyIn(row: index, property: property)
         }
         return date
     }
     
-    private static func parseBoolFrom(string: String, indexOfRow index: Int, propertyName: String) throws -> Bool {
+    private static func parseBoolFrom(string: String, indexOfRow index: Int, property: TodoItemStoredFields) throws -> Bool {
         if let boolValue = Bool.getBool(fromString: string) {
             return boolValue
         }
-        throw CSVParsingError.wrongPropertyIn(row: index, propertyName: propertyName)
+        throw CSVParsingError.wrongPropertyIn(row: index, property: property)
         
     }
     
@@ -61,12 +61,12 @@ extension TodoItem {
             if values.count != 7 {
                 throw CSVParsingError.incorrectSignatureIn(row: indexOfRow)
             }
-            guard let priority = PriorityChoices.getPriorityFrom(string: values[2]) else {
-                throw CSVParsingError.wrongPropertyIn(row: indexOfRow, propertyName: "priority")
+            guard let importance = PriorityChoices.getPriorityFrom(string: values[2]) else {
+                throw CSVParsingError.wrongPropertyIn(row: indexOfRow, property: .importance)
             }
             
             
-            items.insert(TodoItem(id: values[0].isEmpty ? nil : values[0], text: values[1], priority: priority, deadline: try parseDateFrom(string: values[3], indexOfRow: indexOfRow, propertyName: "deadline"), completed: try parseBoolFrom(string: values[4], indexOfRow: indexOfRow, propertyName: "completed"), creationDate: try parseDateFrom(string: values[5], indexOfRow: indexOfRow, propertyName: "creationDate") ?? Date.now, lastChangeDate: try parseDateFrom(string: values[6], indexOfRow: indexOfRow, propertyName: "lastChangeDate")))
+            items.insert(TodoItem(id: values[0].isEmpty ? nil : values[0], text: values[1], importance: importance, deadline: try parseDateFrom(string: values[3], indexOfRow: indexOfRow, property: .deadline), done: try parseBoolFrom(string: values[4], indexOfRow: indexOfRow, property: .done), creationDate: try parseDateFrom(string: values[5], indexOfRow: indexOfRow, property: .createdTime) ?? Date.now, lastChangeDate: try parseDateFrom(string: values[6], indexOfRow: indexOfRow, property: .changedTime)))
         }
         return items
     }
