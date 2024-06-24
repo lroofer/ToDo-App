@@ -10,18 +10,18 @@ import Foundation
 struct TodoItem: Hashable {
     enum PriorityChoices: String {
         case low
-        case ordinary
-        case high
+        case basic
+        case important
         static func getPriorityFrom(string type: String) -> PriorityChoices? {
             switch(type) {
             case PriorityChoices.low.rawValue:
                 return .low
             case "":
                 fallthrough
-            case PriorityChoices.ordinary.rawValue:
-                return .ordinary
-            case PriorityChoices.high.rawValue:
-                return .high
+            case PriorityChoices.basic.rawValue:
+                return .basic
+            case PriorityChoices.important.rawValue:
+                return .important
             default:
                 return nil
             }
@@ -29,24 +29,33 @@ struct TodoItem: Hashable {
     }
     let id: String
     let text: String
-    let priority: PriorityChoices
+    let importance: PriorityChoices
     let deadline: Date?
-    let completed: Bool
-    let creationDate: Date
-    let lastChangeDate: Date?
+    let done: Bool
+    let createdTime: Date
+    let changedTime: Date?
     func hash(into hasher: inout Hasher) {
         hasher.combine(id)
     }
     static func == (lhs: TodoItem, rhs: TodoItem) -> Bool {
         return lhs.id == rhs.id
     }
-    init(id: String?, text: String, priority: PriorityChoices, deadline: Date?, completed: Bool, creationDate: Date, lastChangeDate: Date?) {
+    init(id: String?, text: String, importance: PriorityChoices, deadline: Date?, done: Bool, creationDate: Date, lastChangeDate: Date?) {
         self.id = id ?? UUID().uuidString
         self.text = text
-        self.priority = priority
+        self.importance = importance
         self.deadline = deadline
-        self.completed = completed
-        self.creationDate = creationDate
-        self.lastChangeDate = lastChangeDate
+        self.done = done
+        self.createdTime = creationDate
+        self.changedTime = lastChangeDate
+    }
+    init() {
+        self.id = UUID().uuidString
+        self.text = ""
+        self.importance = .basic
+        self.deadline = .now.tommorow
+        self.done = false
+        self.createdTime = .now
+        self.changedTime = .now
     }
 }

@@ -13,9 +13,9 @@ final class FileCacheTesting: XCTestCase {
     
     func testFetching() async throws {
         let fileCache = FileCache()
-        let task1 = TodoItem(id: nil, text: "Task 1", priority: .low, deadline: nil, completed: false, creationDate: .now, lastChangeDate: nil)
+        let task1 = TodoItem(id: nil, text: "Task 1", importance: .low, deadline: nil, done: false, creationDate: .now, lastChangeDate: nil)
         fileCache.addNew(task: task1)
-        fileCache.addNew(task: TodoItem(id: nil, text: "Task 2", priority: .high, deadline: .now, completed: false, creationDate: .now, lastChangeDate: .now))
+        fileCache.addNew(task: TodoItem(id: nil, text: "Task 2", importance: .important, deadline: .now, done: false, creationDate: .now, lastChangeDate: .now))
         fileCache.addNew(task: task1)
         XCTAssert(fileCache.tasks.count == 2)
         _ = fileCache.deleteTask(with: task1.id)

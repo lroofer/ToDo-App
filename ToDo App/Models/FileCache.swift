@@ -30,7 +30,7 @@ class FileCache {
     /// Prepare and encode data to the JSON.
     private func exportAllData() -> Data? {
         var data = [[String : Any]]()
-        for (id, element) in tasks {
+        for (_, element) in tasks {
             data.append(element.dict)
         }
         return try? JSONSerialization.data(withJSONObject: data)

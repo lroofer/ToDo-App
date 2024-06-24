@@ -13,23 +13,23 @@ final class TodoItemTests: XCTestCase {
     
     // Convertion test
     func testPriorityCalculation() async throws {
-        XCTAssert(TodoItem.PriorityChoices.getPriorityFrom(string: "") == .ordinary)
+        XCTAssert(TodoItem.PriorityChoices.getPriorityFrom(string: "") == .basic)
         XCTAssert(TodoItem.PriorityChoices.getPriorityFrom(string: "low") == .low)
-        XCTAssert(TodoItem.PriorityChoices.getPriorityFrom(string: "ordinary") == .ordinary)
-        XCTAssert(TodoItem.PriorityChoices.getPriorityFrom(string: "high") == .high)
+        XCTAssert(TodoItem.PriorityChoices.getPriorityFrom(string: "ordinary") == .basic)
+        XCTAssert(TodoItem.PriorityChoices.getPriorityFrom(string: "high") == .important)
         XCTAssert(TodoItem.PriorityChoices.getPriorityFrom(string: "test") == nil)
     }
     
     // Test the Ability to distinct elements by id
     func testForEquality() async throws {
         var listOfItems = Set<TodoItem>()
-        let object = TodoItem(id: nil, text: "First text", priority: .low, deadline: nil, completed: false, creationDate: Date.now, lastChangeDate: nil)
+        let object = TodoItem(id: nil, text: "First text", importance: .low, deadline: nil, done: false, creationDate: Date.now, lastChangeDate: nil)
         listOfItems.insert(object)
         listOfItems.insert(object)
-        let modifiedObject = TodoItem(id: object.id, text: "Second text", priority: .low, deadline: nil, completed: false, creationDate: Date.now, lastChangeDate: nil)
+        let modifiedObject = TodoItem(id: object.id, text: "Second text", importance: .low, deadline: nil, done: false, creationDate: Date.now, lastChangeDate: nil)
         listOfItems.insert(modifiedObject)
         XCTAssert(listOfItems.count == 1)
-        listOfItems.insert(TodoItem(id: nil, text: "First text", priority: .low, deadline: nil, completed: false, creationDate: Date.now, lastChangeDate: nil))
+        listOfItems.insert(TodoItem(id: nil, text: "First text", importance: .low, deadline: nil, done: false, creationDate: Date.now, lastChangeDate: nil))
         XCTAssert(listOfItems.count == 2)
     }
     
@@ -40,29 +40,29 @@ final class TodoItemTests: XCTestCase {
         let item_1 = TodoItem.parse(json: try Data(contentsOf: jsonFileUrl_1))!
         XCTAssert(item_1.id == "29D4B96B-2F6D-4F6C-AC99-0C1915AD414A")
         XCTAssert(item_1.text == "Attempted testing")
-        XCTAssert(item_1.priority == .low)
-        XCTAssert(item_1.completed == true)
+        XCTAssert(item_1.importance == .low)
+        XCTAssert(item_1.done == true)
         let item_2 = TodoItem.parse(json: try String(contentsOf: jsonFileUrl_2, encoding: .utf8))!
         XCTAssert(item_2.id == "29D4B96B-2F6D-4F6C-AC99-0C1915AD414A")
         XCTAssert(item_2.text == "Attempted testing")
-        XCTAssert(item_2.priority == .ordinary)
-        XCTAssert(item_2.completed == false)
+        XCTAssert(item_2.importance == .basic)
+        XCTAssert(item_2.done == false)
     }
     
     // TestEncoder to json
     func testEncoding() async throws {
-        let item = TodoItem(id: nil, text: "Testing", priority: .low, deadline: .now, completed: false, creationDate: .now, lastChangeDate: nil)
+        let item = TodoItem(id: nil, text: "Testing", importance: .low, deadline: .now, done: false, creationDate: .now, lastChangeDate: nil)
         let jsonParsedObject = item.json as? Data
         XCTAssert(jsonParsedObject != nil)
         let itemGet = TodoItem.parse(json: item.json)
         XCTAssert(itemGet != nil)
         XCTAssert(itemGet!.id == item.id)
         XCTAssert(itemGet!.text == item.text)
-        XCTAssert(itemGet!.priority == item.priority)
+        XCTAssert(itemGet!.importance == item.importance)
         XCTAssert(itemGet!.deadline?.description == item.deadline?.description)
-        XCTAssert(itemGet!.creationDate.description == item.creationDate.description)
-        XCTAssert(itemGet!.lastChangeDate?.description == item.lastChangeDate?.description)
-        XCTAssert(itemGet!.completed == item.completed)
+        XCTAssert(itemGet!.createdTime.description == item.createdTime.description)
+        XCTAssert(itemGet!.changedTime?.description == item.changedTime?.description)
+        XCTAssert(itemGet!.done == item.done)
     }
     
     // TestCSV unpacking
@@ -73,15 +73,15 @@ final class TodoItemTests: XCTestCase {
         for element in items {
             if element.id == "uu1" {
                 XCTAssert(element.text == "Test message, afterwards")
-                XCTAssert(element.priority == .low)
+                XCTAssert(element.importance == .low)
                 XCTAssert(element.deadline?.ISO8601Format() == "2016-04-14T10:44:00Z")
-                XCTAssert(!element.completed)
-                XCTAssert(element.lastChangeDate?.ISO8601Format() == "2017-04-14T10:44:00Z")
+                XCTAssert(!element.done)
+                XCTAssert(element.changedTime?.ISO8601Format() == "2017-04-14T10:44:00Z")
             } else {
                 XCTAssert(element.text == "Wrong message")
-                XCTAssert(element.completed)
+                XCTAssert(element.done)
             }
-            XCTAssert(element.creationDate.ISO8601Format() == "2016-04-14T10:44:00Z")
+            XCTAssert(element.createdTime.ISO8601Format() == "2016-04-14T10:44:00Z")
         }
     }
     
