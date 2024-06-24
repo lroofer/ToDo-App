@@ -11,7 +11,7 @@ import SwiftUI
 struct ToDo_AppApp: App {
     var body: some Scene {
         WindowGroup {
-            ContentView(tasks: [TodoItemView]())
+            ContentView(tasks: [TodoItemView(attachedItem: TodoItem(id: UUID().uuidString, text: "Test 1", importance: .important, deadline: .now.tommorow!, done: false, creationDate: .now, lastChangeDate: nil)), TodoItemView(), TodoItemView()])
         }
     }
 }
