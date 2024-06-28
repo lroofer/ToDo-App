@@ -23,6 +23,8 @@
 		0A39EE802C21A95500DD14AE /* ToDo_AppUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A39EE7F2C21A95500DD14AE /* ToDo_AppUITests.swift */; };
 		0A39EE822C21A95500DD14AE /* ToDo_AppUITestsLaunchTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A39EE812C21A95500DD14AE /* ToDo_AppUITestsLaunchTests.swift */; };
 		0A39EE8F2C21AC1700DD14AE /* TodoItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A39EE8E2C21AC1700DD14AE /* TodoItem.swift */; };
+		0A5619522C2F399A00E2A5B4 /* RadioButtonView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A5619512C2F399A00E2A5B4 /* RadioButtonView.swift */; };
+		0A5619542C2F4B0500E2A5B4 /* Todos.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A5619532C2F4B0500E2A5B4 /* Todos.swift */; };
 		0AB1301C2C22010E00816981 /* FileCache.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0AB1301B2C22010E00816981 /* FileCache.swift */; };
 		0AB1301E2C2285D900816981 /* JsonParsing.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0AB1301D2C2285D900816981 /* JsonParsing.swift */; };
 		0AFEA7992C29A65500A5AED5 /* TodoItemView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0AFEA7982C29A65500A5AED5 /* TodoItemView.swift */; };
@@ -63,6 +65,8 @@
 		0A39EE7F2C21A95500DD14AE /* ToDo_AppUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ToDo_AppUITests.swift; sourceTree = "<group>"; };
 		0A39EE812C21A95500DD14AE /* ToDo_AppUITestsLaunchTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ToDo_AppUITestsLaunchTests.swift; sourceTree = "<group>"; };
 		0A39EE8E2C21AC1700DD14AE /* TodoItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TodoItem.swift; sourceTree = "<group>"; };
+		0A5619512C2F399A00E2A5B4 /* RadioButtonView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RadioButtonView.swift; sourceTree = "<group>"; };
+		0A5619532C2F4B0500E2A5B4 /* Todos.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Todos.swift; sourceTree = "<group>"; };
 		0AB1301B2C22010E00816981 /* FileCache.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FileCache.swift; sourceTree = "<group>"; };
 		0AB1301D2C2285D900816981 /* JsonParsing.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JsonParsing.swift; sourceTree = "<group>"; };
 		0AFEA7982C29A65500A5AED5 /* TodoItemView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TodoItemView.swift; sourceTree = "<group>"; };
@@ -99,6 +103,7 @@
 			children = (
 				0A39EE8E2C21AC1700DD14AE /* TodoItem.swift */,
 				0AB1301B2C22010E00816981 /* FileCache.swift */,
+				0A5619532C2F4B0500E2A5B4 /* Todos.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -188,6 +193,7 @@
 			isa = PBXGroup;
 			children = (
 				0AFEA79B2C29A71100A5AED5 /* Date.swift */,
+				0A5619512C2F399A00E2A5B4 /* RadioButtonView.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -331,6 +337,8 @@
 				0A39EE672C21A95400DD14AE /* ContentView.swift in Sources */,
 				0AB1301E2C2285D900816981 /* JsonParsing.swift in Sources */,
 				0A39EE8F2C21AC1700DD14AE /* TodoItem.swift in Sources */,
+				0A5619542C2F4B0500E2A5B4 /* Todos.swift in Sources */,
+				0A5619522C2F399A00E2A5B4 /* RadioButtonView.swift in Sources */,
 				0AB1301C2C22010E00816981 /* FileCache.swift in Sources */,
 				0A39EE652C21A95400DD14AE /* ToDo_AppApp.swift in Sources */,
 				0AFEA7992C29A65500A5AED5 /* TodoItemView.swift in Sources */,
