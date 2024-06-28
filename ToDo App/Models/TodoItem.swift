@@ -6,8 +6,9 @@
 //
 
 import Foundation
+import SwiftUI
 
-struct TodoItem: Hashable {
+struct TodoItem: Hashable, Identifiable {
     enum PriorityChoices: String {
         case low
         case basic
@@ -59,3 +60,10 @@ struct TodoItem: Hashable {
         self.changedTime = .now
     }
 }
+
+extension TodoItem {
+    var getCompleted: TodoItem {
+        return TodoItem(id: id, text: text, importance: importance, deadline: deadline, done: true, creationDate: createdTime, lastChangeDate: changedTime)
+    }
+}
+

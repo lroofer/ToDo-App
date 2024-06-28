@@ -8,92 +8,131 @@
 import SwiftUI
 
 struct TodoItemView: View {
+    @Environment(\.dismiss) var dismiss
     @State var hasDeadline: Bool
     @State var deadline: Date
     @State var text: String
     @State var completed: Bool
+    @State var showCalendar: Bool = false
     @State var priority: TodoItem.PriorityChoices
-    var attachedItem: TodoItem
-    init(attachedItem: TodoItem) {
-        self.attachedItem = attachedItem
-        self.text = attachedItem.text
-        self.completed = attachedItem.done
-        self.priority = attachedItem.importance
-        self.hasDeadline = attachedItem.deadline != nil
-        self.deadline = attachedItem.deadline ?? .now.tommorow!
+    let redactedId: String
+    let creationDate: Date
+    private let onSave: (TodoItem)->Void
+    private let onDelete: (String)->Void
+
+    init(unpack: TodoItem, onSave: @escaping (TodoItem)->Void, onDelete: @escaping (String)->Void) {
+        self.redactedId = unpack.id
+        self.text = unpack.text
+        self.completed = unpack.done
+        self.priority = unpack.importance
+        self.hasDeadline = unpack.deadline != nil
+        self.deadline = unpack.deadline ?? .now.tommorow!
+        self.creationDate = unpack.createdTime
+        self.onSave = onSave
+        self.onDelete = onDelete
     }
-    init() {
-        self.init(attachedItem: TodoItem())
+    init(onSave: @escaping (TodoItem)->Void, onDelete: @escaping (String)->Void) {
+        self.init(unpack: TodoItem(), onSave: onSave, onDelete: onDelete)
     }
     var body: some View {
-        ScrollView {
-            VStack {
-                VStack (alignment: .leading) {
-                    TextField("What do you have to get done?", text: $text, axis: .vertical)
-                    Spacer()
-                }
-                .frame(minHeight: 120, maxHeight: .infinity)
-                .padding()
-                .background()
-                .clipShape(RoundedRectangle(cornerRadius: 16))
-
-                    
+        NavigationView {
+            ScrollView {
                 VStack {
-                    HStack(spacing: 120) {
-                        Text("Priority")
-                        Picker("Choose priority", selection: $priority) {
-                            Image(systemName: "arrow.down").tag(TodoItem.PriorityChoices.low)
-                            Text("None").tag(TodoItem.PriorityChoices.basic)
-                            Image(systemName: "exclamationmark.2")
-                                .tag(TodoItem.PriorityChoices.important)
-                        }
-                        .pickerStyle(.segmented)
-                        .labelsHidden()
+                    VStack (alignment: .leading) {
+                        TextField("What do you have to get done?", text: $text, axis: .vertical)
+                        Spacer()
                     }
-                    Divider()
-                    
-                    HStack {
-                        Toggle(isOn: $hasDeadline) {
-                            VStack (alignment: .leading){
-                                Text("Due to")
-                                if hasDeadline {
-                                    Text( deadline.formatted(date: .abbreviated, time: .omitted))
-                                        .font(.caption)
-                                        .foregroundStyle(.blue)
+                    .frame(minHeight: 120, maxHeight: .infinity)
+                    .padding()
+                    .background()
+                    .clipShape(RoundedRectangle(cornerRadius: 16))
+
+                        
+                    VStack {
+                        HStack(spacing: 120) {
+                            Text("Priority")
+                            Picker("Choose priority", selection: $priority) {
+                                Image(systemName: "arrow.down").tag(TodoItem.PriorityChoices.low)
+                                Text("None").tag(TodoItem.PriorityChoices.basic)
+                                Image(systemName: "exclamationmark.2")
+                                    //.renderingMode(.template)
+                                    //.foregroundStyle(.red, .blue)
+                                    .tag(TodoItem.PriorityChoices.important)
+                            }
+                            .pickerStyle(.segmented)
+                            .labelsHidden()
+                        }
+                        Divider()
+                        
+                        HStack {
+                            Toggle(isOn: $hasDeadline.animation(.easeIn)) {
+                                Button {
+                                    withAnimation {
+                                        showCalendar.toggle()
+                                    }
+                                } label: {
+                                    VStack (alignment: .leading){
+                                        Text("Due to")
+                                        if hasDeadline {
+                                            Text( deadline.formatted(date: .abbreviated, time: .omitted))
+                                                .font(.caption)
+                                                .foregroundStyle(.blue)
+                                        }
+                                    }
                                 }
+                                .foregroundStyle(.primary)
                             }
                         }
-                    }
-                    if hasDeadline {
-                        Divider()
-                        DatePicker("Choose time", selection: $deadline, in: Date.now..., displayedComponents: .date)
-                            .datePickerStyle(.graphical)
-                    }
-                    Spacer()
-                }
-                .frame(maxHeight: .infinity)
-                .padding()
-                .background()
-                .clipShape(RoundedRectangle(cornerRadius: 16))
-                VStack {
-                    HStack {
-                        Button("Delete") {
-                            
+                        if hasDeadline, showCalendar {
+                            Divider()
+                            DatePicker("Choose time", selection: $deadline, in: Date.now..., displayedComponents: .date)
+                                .datePickerStyle(.graphical)
+                                //.transition(.asymmetric(insertion: .scale, removal: .opacity))
+                                
                         }
-                        .foregroundColor(.red)
+                        Spacer()
+                    }
+                    .frame(maxHeight: .infinity)
+                    .padding()
+                    .background()
+                    .clipShape(RoundedRectangle(cornerRadius: 16))
+                    VStack {
+                        HStack {
+                            Button("Delete") {
+                                onDelete(redactedId)
+                                dismiss()
+                            }
+                            .foregroundColor(.red)
+                        }
+                    }
+                    .frame(maxWidth: .infinity, minHeight: 20, maxHeight: .infinity)
+                    .padding()
+                    .background()
+                    .clipShape(RoundedRectangle(cornerRadius: 16))
+                }
+                .padding()
+            }
+            .background(.thickMaterial)
+            .navigationBarTitleDisplayMode(.inline)
+            .navigationTitle("Task")
+            .toolbar {
+                ToolbarItem(placement: .topBarTrailing) {
+                    Button("Save") {
+                        onSave(TodoItem(id: redactedId, text: text, importance: priority, deadline: hasDeadline ? deadline : nil, done: completed, creationDate: creationDate, lastChangeDate: .now))
+                        dismiss()
                     }
                 }
-                .frame(maxWidth: .infinity, minHeight: 20, maxHeight: .infinity)
-                .padding()
-                .background()
-                .clipShape(RoundedRectangle(cornerRadius: 16))
+                ToolbarItem(placement: .topBarLeading) {
+                    Button("Cancel") {
+                        dismiss()
+                    }
+                }
             }
-            .padding()
         }
-        .background(.thickMaterial)
+        .navigationBarBackButtonHidden()
     }
 }
 
 #Preview {
-    TodoItemView()
+    TodoItemView(onSave: {_ in}, onDelete: {_ in})
 }

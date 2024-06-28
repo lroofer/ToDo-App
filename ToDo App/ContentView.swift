@@ -8,14 +8,15 @@
 import SwiftUI
 
 struct ContentView: View {
-    @State var tasks: [TodoItemView]
+    @StateObject var todos = Todos()
     @State var addNewShow = false
     @State var showCompleted = false
+    
     var body: some View {
         NavigationStack {
             List{
                 Section(header: HStack {
-                    Text("Completed - none")
+                    Text("Completed - \(todos.countCompleted)")
                     Spacer()
                     Button(showCompleted ? "Hide" : "Show") {
                         showCompleted.toggle()
@@ -24,32 +25,38 @@ struct ContentView: View {
                     .font(.callout)
                     .textCase(.none)
                 ) {
-                    ForEach(0..<tasks.count, id:\.self) { id in
-                        if !tasks[id].attachedItem.done || showCompleted {
-                            NavigationLink(value: id) {
+                    ForEach(todos.items.sorted(by: { a, b in
+                        a.value.createdTime > b.value.createdTime
+                    }), id: \.value) { item in
+                        if !item.value.done || showCompleted {
+                            NavigationLink(value: item.key) {
                                 HStack {
                                     Button(action: {
-                                        
-                                    }, label: {
-                                        if tasks[id].attachedItem.done {
-                                            Image(systemName: "circle.inset.filled")
-                                        } else {
-                                            Image(systemName: "circle")
+                                        if !item.value.done {
+                                            saveItem(newItem: item.value.getCompleted)
                                         }
+                                    }, label: {
+                                        RadioButtonView(task: item.value)
                                     })
                                     .buttonBorderShape(.roundedRectangle)
                                     .buttonStyle(.plain)
+                                    if item.value.importance != .basic {
+                                        Image(systemName: item.value.importance == .important ? "exclamationmark.2" : "arrow.down")
+                                            .foregroundStyle(item.value.importance == .important ? .red : .primary)
+                                    }
                                     VStack (alignment: .leading) {
-                                        Text(tasks[id].attachedItem.text)
+                                        Text(item.value.text)
                                             .lineLimit(1)
                                             .font(.system(size: 17))
-                                        if tasks[id].attachedItem.deadline != nil {
+                                            .strikethrough(item.value.done)
+                                            .foregroundStyle(item.value.done ? .secondary : .primary)
+                                        if item.value.deadline != nil, !item.value.done {
                                             HStack {
                                                 Image(systemName: "calendar")
-                                                Text(tasks[id].attachedItem.deadline!.formatted(date: .abbreviated, time: .omitted))
+                                                Text(item.value.deadline!.formatted(date: .abbreviated, time: .omitted))
                                             }
                                             .font(.system(size: 13))
-                                            .foregroundColor(.accentColor)
+                                            .foregroundColor(.secondary)
                                         }
                                     }
                                     .padding(5)
@@ -57,15 +64,15 @@ struct ContentView: View {
                             }
                         }
                     }
+                    
+                    Button("New") {
+                        addNewShow.toggle()
+                    }
+                        .foregroundStyle(.secondary)
                 }
+                
             }
-            .navigationDestination(for: Int.self, destination: { id in
-                tasks[id]
-            })
-            .navigationTitle("My tasks")
-        }
-        .overlay(alignment: .bottom) {
-            if (!addNewShow) {
+            .overlay(alignment: .bottom) {
                 Button("+") {
                     addNewShow.toggle()
                 }
@@ -75,13 +82,24 @@ struct ContentView: View {
                 .background(.blue)
                 .clipShape(Circle())
             }
+            .navigationDestination(for: String.self, destination: { id in
+                if let unpack = todos.items[id] {
+                    TodoItemView(unpack: unpack, onSave: saveItem) { id in
+                        todos.removeItem(with: id)
+                    }
+                }
+            })
+            .navigationTitle("My tasks")
         }
         .sheet(isPresented: $addNewShow) {
-            TodoItemView()
+            TodoItemView(onSave: saveItem, onDelete: {_ in})
         }
+    }
+    func saveItem(newItem: TodoItem) {
+        todos.setItem(with: newItem.id, value: newItem)
     }
 }
 
 #Preview {
-    ContentView(tasks: [TodoItemView(attachedItem: TodoItem(id: UUID().uuidString, text: "Test 1", importance: .important, deadline: .now.tommorow!, done: false, creationDate: .now, lastChangeDate: nil)), TodoItemView(), TodoItemView()])
+    ContentView()
 }
