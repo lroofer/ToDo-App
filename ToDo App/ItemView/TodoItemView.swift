@@ -152,6 +152,7 @@ struct TodoItemView: View {
                         onSave(TodoItem(id: redactedId, text: text, importance: priority, deadline: hasDeadline ? deadline : nil, done: completed, color: hasCustomColor ? color : nil, creationDate: creationDate, lastChangeDate: .now))
                         dismiss()
                     }
+                    .disabled(text.isEmpty)
                 }
                 if ToDo_AppApp.idiom != .pad {
                     ToolbarItem(placement: .topBarLeading) {
