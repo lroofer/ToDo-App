@@ -42,7 +42,7 @@ struct TodoItemView: View {
         self.init(unpack: TodoItem(), onSave: onSave, onDelete: onDelete)
     }
     var body: some View {
-        NavigationView {
+        NavigationStack {
             ScrollView {
                 TodoViewLayout(hasCustomColor: $hasCustomColor, color: $color, focusState: _isInputActive, textField: {
                     TextField("What do you have to get done?", text: $text, axis: .vertical)
@@ -153,11 +153,14 @@ struct TodoItemView: View {
                         dismiss()
                     }
                 }
-                ToolbarItem(placement: .topBarLeading) {
-                    Button("Cancel") {
-                        dismiss()
+                if ToDo_AppApp.idiom != .pad {
+                    ToolbarItem(placement: .topBarLeading) {
+                        Button("Cancel") {
+                            dismiss()
+                        }
                     }
                 }
+                
             }
             .scrollDismissesKeyboard(.interactively)
         }

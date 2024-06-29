@@ -24,7 +24,7 @@
          BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
          <BreakpointContent
             uuid = "209A18C1-205A-4527-BA32-E8A06DAA6D86"
-            shouldBeEnabled = "Yes"
+            shouldBeEnabled = "No"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "ToDo App/ContentView.swift"
@@ -34,57 +34,13 @@
             endingLineNumber = "154"
             landmarkName = "body"
             landmarkType = "24">
-            <Locations>
-               <Location
-                  uuid = "209A18C1-205A-4527-BA32-E8A06DAA6D86 - 4bbbc33814589c"
-                  shouldBeEnabled = "Yes"
-                  ignoreCount = "0"
-                  continueAfterRunningActions = "No"
-                  symbolName = "closure #3 () -&gt; SwiftUI._ConditionalContent&lt;ToDo_App.TodoItemView, ToDo_App.TodoItemView&gt; in ToDo_App.ContentView.body.getter : some"
-                  moduleName = "ToDo App"
-                  usesParentBreakpointCondition = "Yes"
-                  urlString = "file:///Users/lroofer/Documents/Xcode%20Projects/ToDo%20App/ToDo%20App/ContentView.swift"
-                  startingColumnNumber = "9223372036854775807"
-                  endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "154"
-                  endingLineNumber = "154">
-               </Location>
-               <Location
-                  uuid = "209A18C1-205A-4527-BA32-E8A06DAA6D86 - 4bbbc33814589c"
-                  shouldBeEnabled = "Yes"
-                  ignoreCount = "0"
-                  continueAfterRunningActions = "No"
-                  symbolName = "closure #3 () -&gt; SwiftUI._ConditionalContent&lt;ToDo_App.TodoItemView, ToDo_App.TodoItemView&gt; in ToDo_App.ContentView.body.getter : some"
-                  moduleName = "ToDo App"
-                  usesParentBreakpointCondition = "Yes"
-                  urlString = "file:///Users/lroofer/Documents/Xcode%20Projects/ToDo%20App/ToDo%20App/ContentView.swift"
-                  startingColumnNumber = "9223372036854775807"
-                  endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "154"
-                  endingLineNumber = "154">
-               </Location>
-               <Location
-                  uuid = "209A18C1-205A-4527-BA32-E8A06DAA6D86 - 4bbbc33814589c"
-                  shouldBeEnabled = "Yes"
-                  ignoreCount = "0"
-                  continueAfterRunningActions = "No"
-                  symbolName = "closure #3 () -&gt; SwiftUI._ConditionalContent&lt;ToDo_App.TodoItemView, ToDo_App.TodoItemView&gt; in ToDo_App.ContentView.body.getter : some"
-                  moduleName = "ToDo App"
-                  usesParentBreakpointCondition = "Yes"
-                  urlString = "file:///Users/lroofer/Documents/Xcode%20Projects/ToDo%20App/ToDo%20App/ContentView.swift"
-                  startingColumnNumber = "9223372036854775807"
-                  endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "154"
-                  endingLineNumber = "154">
-               </Location>
-            </Locations>
          </BreakpointContent>
       </BreakpointProxy>
       <BreakpointProxy
          BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
          <BreakpointContent
             uuid = "CB7120BE-6094-4832-82B0-F7753D75C6B9"
-            shouldBeEnabled = "Yes"
+            shouldBeEnabled = "No"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "ToDo App/ContentView.swift"
@@ -100,7 +56,7 @@
          BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
          <BreakpointContent
             uuid = "3C482388-CCB0-4D3E-B886-DEE21A4810AC"
-            shouldBeEnabled = "Yes"
+            shouldBeEnabled = "No"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "ToDo App/ContentView.swift"

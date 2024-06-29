@@ -9,9 +9,15 @@ import SwiftUI
 
 @main
 struct ToDo_AppApp: App {
+    static var idiom : UIUserInterfaceIdiom { UIDevice.current.userInterfaceIdiom }
+
     var body: some Scene {
         WindowGroup {
-            ContentView()
+            if ToDo_AppApp.idiom != .pad {
+                ContentView()
+            } else {
+                SplitPadView()
+            }
         }
     }
 }

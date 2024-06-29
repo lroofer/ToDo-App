@@ -27,6 +27,8 @@
 		0A5619542C2F4B0500E2A5B4 /* Todos.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A5619532C2F4B0500E2A5B4 /* Todos.swift */; };
 		0A5619562C2F814700E2A5B4 /* Color.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A5619552C2F814700E2A5B4 /* Color.swift */; };
 		0A5619582C2F997300E2A5B4 /* TodoViewLayouts.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A5619572C2F997300E2A5B4 /* TodoViewLayouts.swift */; };
+		0A8CFA552C2FB7ED00A9F549 /* SplitPadView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A8CFA542C2FB7ED00A9F549 /* SplitPadView.swift */; };
+		0A8CFA582C2FB8DF00A9F549 /* TaskListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A8CFA572C2FB8DF00A9F549 /* TaskListView.swift */; };
 		0AB1301C2C22010E00816981 /* FileCache.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0AB1301B2C22010E00816981 /* FileCache.swift */; };
 		0AB1301E2C2285D900816981 /* JsonParsing.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0AB1301D2C2285D900816981 /* JsonParsing.swift */; };
 		0AFEA7992C29A65500A5AED5 /* TodoItemView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0AFEA7982C29A65500A5AED5 /* TodoItemView.swift */; };
@@ -71,6 +73,8 @@
 		0A5619532C2F4B0500E2A5B4 /* Todos.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Todos.swift; sourceTree = "<group>"; };
 		0A5619552C2F814700E2A5B4 /* Color.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Color.swift; sourceTree = "<group>"; };
 		0A5619572C2F997300E2A5B4 /* TodoViewLayouts.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TodoViewLayouts.swift; sourceTree = "<group>"; };
+		0A8CFA542C2FB7ED00A9F549 /* SplitPadView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SplitPadView.swift; sourceTree = "<group>"; };
+		0A8CFA572C2FB8DF00A9F549 /* TaskListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TaskListView.swift; sourceTree = "<group>"; };
 		0AB1301B2C22010E00816981 /* FileCache.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FileCache.swift; sourceTree = "<group>"; };
 		0AB1301D2C2285D900816981 /* JsonParsing.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JsonParsing.swift; sourceTree = "<group>"; };
 		0AFEA7982C29A65500A5AED5 /* TodoItemView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TodoItemView.swift; sourceTree = "<group>"; };
@@ -161,8 +165,8 @@
 				0A39EE682C21A95500DD14AE /* Assets.xcassets */,
 				0A39EE6A2C21A95500DD14AE /* Preview Content */,
 				0A2C5B4F2C26097A007D8889 /* Parsers */,
-				0AFEA7982C29A65500A5AED5 /* TodoItemView.swift */,
-				0A5619572C2F997300E2A5B4 /* TodoViewLayouts.swift */,
+				0A8CFA562C2FB8A800A9F549 /* ItemView */,
+				0A8CFA592C2FC20900A9F549 /* iPad Integration */,
 			);
 			path = "ToDo App";
 			sourceTree = "<group>";
@@ -192,6 +196,24 @@
 				0A39EE812C21A95500DD14AE /* ToDo_AppUITestsLaunchTests.swift */,
 			);
 			path = "ToDo AppUITests";
+			sourceTree = "<group>";
+		};
+		0A8CFA562C2FB8A800A9F549 /* ItemView */ = {
+			isa = PBXGroup;
+			children = (
+				0AFEA7982C29A65500A5AED5 /* TodoItemView.swift */,
+				0A5619572C2F997300E2A5B4 /* TodoViewLayouts.swift */,
+			);
+			path = ItemView;
+			sourceTree = "<group>";
+		};
+		0A8CFA592C2FC20900A9F549 /* iPad Integration */ = {
+			isa = PBXGroup;
+			children = (
+				0A8CFA542C2FB7ED00A9F549 /* SplitPadView.swift */,
+				0A8CFA572C2FB8DF00A9F549 /* TaskListView.swift */,
+			);
+			path = "iPad Integration";
 			sourceTree = "<group>";
 		};
 		0AFEA79A2C29A70400A5AED5 /* Extensions */ = {
@@ -347,10 +369,12 @@
 				0A39EE8F2C21AC1700DD14AE /* TodoItem.swift in Sources */,
 				0A5619542C2F4B0500E2A5B4 /* Todos.swift in Sources */,
 				0A5619522C2F399A00E2A5B4 /* RadioButtonView.swift in Sources */,
+				0A8CFA582C2FB8DF00A9F549 /* TaskListView.swift in Sources */,
 				0AB1301C2C22010E00816981 /* FileCache.swift in Sources */,
 				0A39EE652C21A95400DD14AE /* ToDo_AppApp.swift in Sources */,
 				0AFEA7992C29A65500A5AED5 /* TodoItemView.swift in Sources */,
 				0A2C5B512C260999007D8889 /* CsvParsing.swift in Sources */,
+				0A8CFA552C2FB7ED00A9F549 /* SplitPadView.swift in Sources */,
 				0AFEA79C2C29A71100A5AED5 /* Date.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
