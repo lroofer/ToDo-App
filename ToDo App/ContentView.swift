@@ -12,6 +12,7 @@ struct ContentView: View {
     @StateObject var todos = Todos()
     @State var addNewShow = false
     @State var showCompleted = false
+    @State var preferImportance = false
     
     @State private var selectedTask: String?
     
@@ -21,15 +22,18 @@ struct ContentView: View {
                 Section(header: HStack {
                     Text("Completed - \(todos.countCompleted)")
                     Spacer()
-                    Button(showCompleted ? "Hide" : "Show") {
-                        showCompleted.toggle()
-                    }
+//                    Button(showCompleted ? "Hide" : "Show") {
+//                        showCompleted.toggle()
+//                    }
                 }
                     .font(.callout)
                     .textCase(.none)
                 ) {
                     ForEach(todos.items.sorted(by: { a, b in
-                        a.value.createdTime > b.value.createdTime
+                        if preferImportance && a.value.importance != b.value.importance {
+                            return a.value.importance == .important || (a.value.importance == .basic && b.value.importance == .low)
+                        }
+                        return a.value.createdTime > b.value.createdTime
                     }), id: \.value) { item in
                         if !item.value.done || showCompleted {
                             NavigationLink(value: item.key) {
@@ -72,14 +76,16 @@ struct ContentView: View {
                                 }
                             }
                             .swipeActions(edge: .leading, allowsFullSwipe: false) {
-                                Button {
-                                    if !item.value.done {
-                                        saveItem(newItem: item.value.getCompleted)
+                                if !item.value.done{
+                                    Button {
+                                        if !item.value.done {
+                                            saveItem(newItem: item.value.getCompleted)
+                                        }
+                                    } label: {
+                                        RadioButtonView(state: .done)
                                     }
-                                } label: {
-                                    RadioButtonView(state: .done)
+                                    .tint(.green)
                                 }
-                                .tint(.green)
                             }
                             .swipeActions(edge: .trailing, allowsFullSwipe: false) {
                                 Button (role: .destructive) {
@@ -98,11 +104,6 @@ struct ContentView: View {
                                     addNewShow = true
                                 }
                             })
-//                            .onChange(of: selectedTask) { _, newValue in
-//                                if let newValue {
-//                                    addNewShow.toggle()
-//                                }
-//                            }
                         }
                         
                     }
@@ -125,13 +126,26 @@ struct ContentView: View {
                 .background(.blue)
                 .clipShape(Circle())
             }
-//            .navigationDestination(for: String.self, destination: { id in
-//                if let unpack = todos.items[id] {
-//                    TodoItemView(unpack: unpack, onSave: saveItem) { id in
-//                        todos.removeItem(with: id)
-//                    }
-//                }
-//            })
+            .toolbar {
+                ToolbarItem(placement: .topBarTrailing) {
+                    Menu {
+                        Button((showCompleted ? "Hide" : "Show") + " Completed") {
+                            showCompleted.toggle()
+                        }
+                        Menu("Sort by") {
+                            Button("Most Recent") {
+                                preferImportance = false
+                            }
+                            Button("Most important") {
+                                preferImportance = true
+                            }
+                        }
+                    } label: {
+                        Label("Choose category", systemImage: "line.3.horizontal.decrease.circle")
+                    }
+                
+                }
+            }
             .navigationTitle("My tasks")
         }
         .sheet(isPresented: $addNewShow, onDismiss: {
