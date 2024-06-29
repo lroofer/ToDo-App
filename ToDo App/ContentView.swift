@@ -13,9 +13,11 @@ struct ContentView: View {
     @State var addNewShow = false
     @State var showCompleted = false
     
+    @State private var selectedTask: String?
+    
     var body: some View {
         NavigationStack {
-            List{
+            List(selection: $selectedTask){
                 Section(header: HStack {
                     Text("Completed - \(todos.countCompleted)")
                     Spacer()
@@ -91,6 +93,16 @@ struct ContentView: View {
                                     Image(systemName: "info.circle.fill")
                                 }
                             }
+                            .onChange(of: selectedTask, perform: { value in
+                                if value != nil {
+                                    addNewShow = true
+                                }
+                            })
+//                            .onChange(of: selectedTask) { _, newValue in
+//                                if let newValue {
+//                                    addNewShow.toggle()
+//                                }
+//                            }
                         }
                         
                     }
@@ -113,17 +125,25 @@ struct ContentView: View {
                 .background(.blue)
                 .clipShape(Circle())
             }
-            .navigationDestination(for: String.self, destination: { id in
-                if let unpack = todos.items[id] {
-                    TodoItemView(unpack: unpack, onSave: saveItem) { id in
-                        todos.removeItem(with: id)
-                    }
-                }
-            })
+//            .navigationDestination(for: String.self, destination: { id in
+//                if let unpack = todos.items[id] {
+//                    TodoItemView(unpack: unpack, onSave: saveItem) { id in
+//                        todos.removeItem(with: id)
+//                    }
+//                }
+//            })
             .navigationTitle("My tasks")
         }
-        .sheet(isPresented: $addNewShow) {
-            TodoItemView(onSave: saveItem, onDelete: {_ in})
+        .sheet(isPresented: $addNewShow, onDismiss: {
+            selectedTask = nil
+        }) {
+            if let selectedTask, let unpack = todos.items[selectedTask] {
+                TodoItemView(unpack: unpack, onSave: saveItem) { id in
+                    todos.removeItem(with: id)
+                }
+            } else {
+                TodoItemView(onSave: saveItem, onDelete: {_ in})
+            }
         }
     }
     func saveItem(newItem: TodoItem) {
