@@ -3,4 +3,82 @@
    uuid = "AF0F0C3B-F7EF-41F9-80C6-6A664D8161AC"
    type = "1"
    version = "2.0">
+   <Breakpoints>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "331F4DDD-A894-4B78-943C-5A38D75F7492"
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "ToDo App/ContentView.swift"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "97"
+            endingLineNumber = "97"
+            landmarkName = "body"
+            landmarkType = "24">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "209A18C1-205A-4527-BA32-E8A06DAA6D86"
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "ToDo App/ContentView.swift"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "140"
+            endingLineNumber = "140"
+            landmarkName = "body"
+            landmarkType = "24">
+            <Locations>
+               <Location
+                  uuid = "209A18C1-205A-4527-BA32-E8A06DAA6D86 - 4bbbc3381446ae"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "closure #3 () -&gt; SwiftUI._ConditionalContent&lt;ToDo_App.TodoItemView, ToDo_App.TodoItemView&gt; in ToDo_App.ContentView.body.getter : some"
+                  moduleName = "ToDo App"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/lroofer/Documents/Xcode%20Projects/ToDo%20App/ToDo%20App/ContentView.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "140"
+                  endingLineNumber = "140">
+               </Location>
+               <Location
+                  uuid = "209A18C1-205A-4527-BA32-E8A06DAA6D86 - 4bbbc3381446ae"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "closure #3 () -&gt; SwiftUI._ConditionalContent&lt;ToDo_App.TodoItemView, ToDo_App.TodoItemView&gt; in ToDo_App.ContentView.body.getter : some"
+                  moduleName = "ToDo App"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/lroofer/Documents/Xcode%20Projects/ToDo%20App/ToDo%20App/ContentView.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "140"
+                  endingLineNumber = "140">
+               </Location>
+               <Location
+                  uuid = "209A18C1-205A-4527-BA32-E8A06DAA6D86 - 4bbbc3381446ae"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "closure #3 () -&gt; SwiftUI._ConditionalContent&lt;ToDo_App.TodoItemView, ToDo_App.TodoItemView&gt; in ToDo_App.ContentView.body.getter : some"
+                  moduleName = "ToDo App"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/lroofer/Documents/Xcode%20Projects/ToDo%20App/ToDo%20App/ContentView.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "140"
+                  endingLineNumber = "140">
+               </Location>
+            </Locations>
+         </BreakpointContent>
+      </BreakpointProxy>
+   </Breakpoints>
 </Bucket>

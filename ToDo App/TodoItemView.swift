@@ -9,6 +9,8 @@ import SwiftUI
 
 struct TodoItemView: View {
     @Environment(\.dismiss) var dismiss
+    @FocusState var isInputActive: Bool
+
     @State var hasDeadline: Bool
     @State var hasCustomColor: Bool
     @State var deadline: Date
@@ -42,24 +44,20 @@ struct TodoItemView: View {
     var body: some View {
         NavigationView {
             ScrollView {
-                VStack {
-                    HStack {
-                        VStack (alignment: .leading) {
-                            TextField("What do you have to get done?", text: $text, axis: .vertical)
-                                .lineLimit(6...20)
-                            //Spacer()
+                TodoViewLayout(hasCustomColor: $hasCustomColor, color: $color, focusState: _isInputActive, textField: {
+                    TextField("What do you have to get done?", text: $text, axis: .vertical)
+                        .lineLimit(6...50)
+                        .focused($isInputActive)
+                        .toolbar {
+                            ToolbarItemGroup(placement: .keyboard) {
+                                Spacer()
+                                
+                                Button("Done") {
+                                    isInputActive = false
+                                }
+                            }
                         }
-                        .frame(minHeight: 120, maxHeight: .infinity)
-                        .padding()
-                        .background()
-                        .clipShape(RoundedRectangle(cornerRadius: 16))
-                        if hasCustomColor {
-                            color
-                                .frame(width: 5)
-                                .clipShape(RoundedRectangle(cornerRadius: 15))
-                        }
-                    }
-                        
+                }, controls: {
                     VStack {
                         HStack(spacing: 120) {
                             Text("Priority")
@@ -134,13 +132,15 @@ struct TodoItemView: View {
                                 dismiss()
                             }
                             .foregroundColor(.red)
+                            .frame(maxWidth: 350)
                         }
                     }
                     .frame(maxWidth: .infinity, minHeight: 20, maxHeight: .infinity)
                     .padding()
                     .background()
                     .clipShape(RoundedRectangle(cornerRadius: 16))
-                }
+                })
+                
                 .padding()
             }
             .background(.thickMaterial)
@@ -159,6 +159,7 @@ struct TodoItemView: View {
                     }
                 }
             }
+            .scrollDismissesKeyboard(.interactively)
         }
         .navigationBarBackButtonHidden()
     }
