@@ -93,8 +93,9 @@ struct ContentView: View {
                                 } label: {
                                     Image(systemName: "trash.fill")
                                 }
-                                Button {
-                                    
+                                Menu {
+                                    Text("Unique id: \(item.key)")
+                                    Text("Completed: \(item.value.done)")
                                 } label: {
                                     Image(systemName: "info.circle.fill")
                                 }
