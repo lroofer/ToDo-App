@@ -33,6 +33,7 @@ struct TodoItem: Hashable, Identifiable {
     let importance: PriorityChoices
     let deadline: Date?
     let done: Bool
+    let color: Color?
     let createdTime: Date
     let changedTime: Date?
     func hash(into hasher: inout Hasher) {
@@ -41,12 +42,13 @@ struct TodoItem: Hashable, Identifiable {
     static func == (lhs: TodoItem, rhs: TodoItem) -> Bool {
         return lhs.id == rhs.id
     }
-    init(id: String?, text: String, importance: PriorityChoices, deadline: Date?, done: Bool, creationDate: Date, lastChangeDate: Date?) {
+    init(id: String?, text: String, importance: PriorityChoices, deadline: Date?, done: Bool, color: Color?, creationDate: Date, lastChangeDate: Date?) {
         self.id = id ?? UUID().uuidString
         self.text = text
         self.importance = importance
         self.deadline = deadline
         self.done = done
+        self.color = color
         self.createdTime = creationDate
         self.changedTime = lastChangeDate
     }
@@ -56,6 +58,7 @@ struct TodoItem: Hashable, Identifiable {
         self.importance = .basic
         self.deadline = .now.tommorow
         self.done = false
+        self.color = nil
         self.createdTime = .now
         self.changedTime = .now
     }
@@ -63,7 +66,7 @@ struct TodoItem: Hashable, Identifiable {
 
 extension TodoItem {
     var getCompleted: TodoItem {
-        return TodoItem(id: id, text: text, importance: importance, deadline: deadline, done: true, creationDate: createdTime, lastChangeDate: changedTime)
+        return TodoItem(id: id, text: text, importance: importance, deadline: deadline, done: true, color: color, creationDate: createdTime, lastChangeDate: changedTime)
     }
 }
 

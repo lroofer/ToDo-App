@@ -28,9 +28,9 @@ class Todos: ObservableObject {
         items = [:]
         countCompleted = 0
         let id = UUID().uuidString
-        items[id] = TodoItem(id: id, text: "Test 1", importance: .important, deadline: .now.tommorow!, done: false, creationDate: .now, lastChangeDate: nil)
+        items[id] = TodoItem(id: id, text: "Test 1", importance: .important, deadline: .now.tommorow!, done: false, color: .red, creationDate: .now, lastChangeDate: nil)
         let id_2 = UUID().uuidString
-        items[id_2] = TodoItem(id: id_2, text: "Test 2", importance: .important, deadline: .distantPast, done: false, creationDate: .now, lastChangeDate: nil)
+        items[id_2] = TodoItem(id: id_2, text: "Test 2", importance: .important, deadline: .distantPast, done: false, color: .blue, creationDate: .now, lastChangeDate: nil)
         for (_, value) in items {
             countCompleted += value.done ? 1 : 0
         }

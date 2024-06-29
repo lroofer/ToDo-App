@@ -23,13 +23,13 @@ final class TodoItemTests: XCTestCase {
     // Test the Ability to distinct elements by id
     func testForEquality() async throws {
         var listOfItems = Set<TodoItem>()
-        let object = TodoItem(id: nil, text: "First text", importance: .low, deadline: nil, done: false, creationDate: Date.now, lastChangeDate: nil)
+        let object = TodoItem(id: nil, text: "First text", importance: .low, deadline: nil, done: false, color: nil, creationDate: Date.now, lastChangeDate: nil)
         listOfItems.insert(object)
         listOfItems.insert(object)
-        let modifiedObject = TodoItem(id: object.id, text: "Second text", importance: .low, deadline: nil, done: false, creationDate: Date.now, lastChangeDate: nil)
+        let modifiedObject = TodoItem(id: object.id, text: "Second text", importance: .low, deadline: nil, done: false, color: nil, creationDate: Date.now, lastChangeDate: nil)
         listOfItems.insert(modifiedObject)
         XCTAssert(listOfItems.count == 1)
-        listOfItems.insert(TodoItem(id: nil, text: "First text", importance: .low, deadline: nil, done: false, creationDate: Date.now, lastChangeDate: nil))
+        listOfItems.insert(TodoItem(id: nil, text: "First text", importance: .low, deadline: nil, done: false, color: nil, creationDate: Date.now, lastChangeDate: nil))
         XCTAssert(listOfItems.count == 2)
     }
     
@@ -51,7 +51,7 @@ final class TodoItemTests: XCTestCase {
     
     // TestEncoder to json
     func testEncoding() async throws {
-        let item = TodoItem(id: nil, text: "Testing", importance: .low, deadline: .now, done: false, creationDate: .now, lastChangeDate: nil)
+        let item = TodoItem(id: nil, text: "Testing", importance: .low, deadline: .now, done: false, color: nil, creationDate: .now, lastChangeDate: nil)
         let jsonParsedObject = item.json as? Data
         XCTAssert(jsonParsedObject != nil)
         let itemGet = TodoItem.parse(json: item.json)
