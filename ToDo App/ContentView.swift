@@ -8,6 +8,7 @@
 import SwiftUI
 
 struct ContentView: View {
+    @Environment(\.colorScheme) var colorScheme
     @StateObject var todos = Todos()
     @State var addNewShow = false
     @State var showCompleted = false
@@ -36,7 +37,7 @@ struct ContentView: View {
                                             saveItem(newItem: item.value.getCompleted)
                                         }
                                     }, label: {
-                                        RadioButtonView(task: item.value)
+                                        RadioButtonView(task: item.value, darkTheme: colorScheme == .dark)
                                     })
                                     .buttonBorderShape(.roundedRectangle)
                                     .buttonStyle(.plain)
@@ -60,10 +61,40 @@ struct ContentView: View {
                                         }
                                     }
                                     .padding(5)
+                                    if item.value.color != nil {
+                                        Spacer()
+                                        Circle()
+                                            .fill(item.value.color ?? .red)
+                                            .frame(width: 20, height: 20)
+                                    }
+                                }
+                            }
+                            .swipeActions(edge: .leading, allowsFullSwipe: false) {
+                                Button {
+                                    if !item.value.done {
+                                        saveItem(newItem: item.value.getCompleted)
+                                    }
+                                } label: {
+                                    RadioButtonView(state: .done)
+                                }
+                                .tint(.green)
+                            }
+                            .swipeActions(edge: .trailing, allowsFullSwipe: false) {
+                                Button (role: .destructive) {
+                                    todos.removeItem(with: item.key)
+                                } label: {
+                                    Image(systemName: "trash.fill")
+                                }
+                                Button {
+                                    
+                                } label: {
+                                    Image(systemName: "info.circle.fill")
                                 }
                             }
                         }
+                        
                     }
+    
                     
                     Button("New") {
                         addNewShow.toggle()

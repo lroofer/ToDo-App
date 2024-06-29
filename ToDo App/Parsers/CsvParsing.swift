@@ -66,7 +66,7 @@ extension TodoItem {
             }
             
             
-            items.insert(TodoItem(id: values[0].isEmpty ? nil : values[0], text: values[1], importance: importance, deadline: try parseDateFrom(string: values[3], indexOfRow: indexOfRow, property: .deadline), done: try parseBoolFrom(string: values[4], indexOfRow: indexOfRow, property: .done), creationDate: try parseDateFrom(string: values[5], indexOfRow: indexOfRow, property: .createdTime) ?? Date.now, lastChangeDate: try parseDateFrom(string: values[6], indexOfRow: indexOfRow, property: .changedTime)))
+            items.insert(TodoItem(id: values[0].isEmpty ? nil : values[0], text: values[1], importance: importance, deadline: try parseDateFrom(string: values[3], indexOfRow: indexOfRow, property: .deadline), done: try parseBoolFrom(string: values[4], indexOfRow: indexOfRow, property: .done), color: .black, creationDate: try parseDateFrom(string: values[5], indexOfRow: indexOfRow, property: .createdTime) ?? Date.now, lastChangeDate: try parseDateFrom(string: values[6], indexOfRow: indexOfRow, property: .changedTime)))
         }
         return items
     }

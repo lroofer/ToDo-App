@@ -6,6 +6,7 @@
 //
 
 import Foundation
+import SwiftUI
 
 extension TodoItem {
     enum TodoItemStoredFields: String {
@@ -14,6 +15,7 @@ extension TodoItem {
         case importance
         case deadline
         case done
+        case color
         case createdTime = "created_at"
         case changedTime = "changed_at"
     }
@@ -42,6 +44,11 @@ extension TodoItem {
             return nil
         }
         self.done = completed
+        if let hex = getValue(.color) as? String {
+            self.color = Color(hex: hex)
+        } else {
+            self.color = nil
+        }
         createdTime = Date.getDate(fromStringLocale: getValue(.createdTime) as? String) ?? Date.now
         changedTime = Date.getDate(fromStringLocale: getValue(.changedTime) as? String)
     }

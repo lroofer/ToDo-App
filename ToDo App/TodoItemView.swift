@@ -10,10 +10,13 @@ import SwiftUI
 struct TodoItemView: View {
     @Environment(\.dismiss) var dismiss
     @State var hasDeadline: Bool
+    @State var hasCustomColor: Bool
     @State var deadline: Date
     @State var text: String
     @State var completed: Bool
+    @State var color: Color
     @State var showCalendar: Bool = false
+    @State var showColorPicker: Bool = false
     @State var priority: TodoItem.PriorityChoices
     let redactedId: String
     let creationDate: Date
@@ -23,6 +26,8 @@ struct TodoItemView: View {
     init(unpack: TodoItem, onSave: @escaping (TodoItem)->Void, onDelete: @escaping (String)->Void) {
         self.redactedId = unpack.id
         self.text = unpack.text
+        self.color = unpack.color ?? .primary
+        self.hasCustomColor = unpack.color != nil
         self.completed = unpack.done
         self.priority = unpack.importance
         self.hasDeadline = unpack.deadline != nil
@@ -38,15 +43,22 @@ struct TodoItemView: View {
         NavigationView {
             ScrollView {
                 VStack {
-                    VStack (alignment: .leading) {
-                        TextField("What do you have to get done?", text: $text, axis: .vertical)
-                        Spacer()
+                    HStack {
+                        VStack (alignment: .leading) {
+                            TextField("What do you have to get done?", text: $text, axis: .vertical)
+                                .lineLimit(6...20)
+                            //Spacer()
+                        }
+                        .frame(minHeight: 120, maxHeight: .infinity)
+                        .padding()
+                        .background()
+                        .clipShape(RoundedRectangle(cornerRadius: 16))
+                        if hasCustomColor {
+                            color
+                                .frame(width: 5)
+                                .clipShape(RoundedRectangle(cornerRadius: 15))
+                        }
                     }
-                    .frame(minHeight: 120, maxHeight: .infinity)
-                    .padding()
-                    .background()
-                    .clipShape(RoundedRectangle(cornerRadius: 16))
-
                         
                     VStack {
                         HStack(spacing: 120) {
@@ -63,7 +75,26 @@ struct TodoItemView: View {
                             .labelsHidden()
                         }
                         Divider()
-                        
+                        HStack {
+                            Toggle(isOn: $hasCustomColor.animation(.easeInOut)) {
+                                Button {
+                                    withAnimation {
+                                        showColorPicker.toggle()
+                                    }
+                                } label: {
+                                    VStack (alignment: .leading) {
+                                        Text("Custom color")
+                                        Text(hasCustomColor ? color.toHex() ?? "custom" : "(none)")
+                                            .foregroundStyle(hasCustomColor ? color : .secondary)
+                                    }
+                                }
+                                .foregroundStyle(.primary)
+                            }
+                        }
+                        if showColorPicker, hasCustomColor {
+                            ColorPicker("Select", selection: $color, supportsOpacity: true)
+                                .pickerStyle(.wheel)
+                        }
                         HStack {
                             Toggle(isOn: $hasDeadline.animation(.easeIn)) {
                                 Button {
@@ -74,7 +105,7 @@ struct TodoItemView: View {
                                     VStack (alignment: .leading){
                                         Text("Due to")
                                         if hasDeadline {
-                                            Text( deadline.formatted(date: .abbreviated, time: .omitted))
+                                            Text(deadline.formatted(date: .abbreviated, time: .omitted))
                                                 .font(.caption)
                                                 .foregroundStyle(.blue)
                                         }
@@ -118,7 +149,7 @@ struct TodoItemView: View {
             .toolbar {
                 ToolbarItem(placement: .topBarTrailing) {
                     Button("Save") {
-                        onSave(TodoItem(id: redactedId, text: text, importance: priority, deadline: hasDeadline ? deadline : nil, done: completed, creationDate: creationDate, lastChangeDate: .now))
+                        onSave(TodoItem(id: redactedId, text: text, importance: priority, deadline: hasDeadline ? deadline : nil, done: completed, color: hasCustomColor ? color : nil, creationDate: creationDate, lastChangeDate: .now))
                         dismiss()
                     }
                 }

@@ -12,9 +12,11 @@ struct RadioButtonView: View {
         case done, overdue, basic
     }
     private let state: RadioButtonState
+    private let darkTheme: Bool
     
-    init(state: RadioButtonState) {
+    init(state: RadioButtonState, darkTheme: Bool = false) {
         self.state = state
+        self.darkTheme = darkTheme
     }
     
     var body: some View {
@@ -48,7 +50,7 @@ private extension RadioButtonView {
     var outlineColor: Color {
         switch state {
         case .basic:
-            return .black.opacity(0.2)
+            return darkTheme ? .white.opacity(0.2) : .black.opacity(0.2)
         case .done:
             return .green
         case .overdue:
@@ -67,8 +69,9 @@ extension RadioButtonView {
         }
         return .basic
     }
-    init(task: TodoItem) {
+    init(task: TodoItem, darkTheme: Bool = false) {
         self.state = RadioButtonView.getStateFrom(task: task)
+        self.darkTheme = darkTheme
     }
 }
 
