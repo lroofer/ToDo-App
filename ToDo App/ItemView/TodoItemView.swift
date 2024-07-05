@@ -11,15 +11,15 @@ struct TodoItemView: View {
     @Environment(\.dismiss) var dismiss
     @FocusState var isInputActive: Bool
 
-    @State var hasDeadline: Bool
-    @State var hasCustomColor: Bool
-    @State var deadline: Date
-    @State var text: String
-    @State var completed: Bool
-    @State var color: Color
+    @State var hasDeadline: Bool = false
+    @State var hasCustomColor: Bool = false
+    @State var deadline: Date = .now
+    @State var text: String = ""
+    @State var completed: Bool = false
+    @State var color: Color = .white
     @State var showCalendar: Bool = false
     @State var showColorPicker: Bool = false
-    @State var priority: TodoItem.PriorityChoices
+    @State var priority: TodoItem.PriorityChoices = .basic
     let redactedId: String
     let creationDate: Date
     private let onSave: (TodoItem)->Void
@@ -27,13 +27,13 @@ struct TodoItemView: View {
 
     init(unpack: TodoItem, onSave: @escaping (TodoItem)->Void, onDelete: @escaping (String)->Void) {
         self.redactedId = unpack.id
-        self.text = unpack.text
-        self.color = unpack.color ?? .primary
-        self.hasCustomColor = unpack.color != nil
-        self.completed = unpack.done
-        self.priority = unpack.importance
-        self.hasDeadline = unpack.deadline != nil
-        self.deadline = unpack.deadline ?? .now.tommorow!
+        _text = State(initialValue: unpack.text)
+        _color = State(initialValue: unpack.color ?? .primary)
+        _hasCustomColor = State(initialValue: unpack.color != nil)
+        _completed = State(initialValue: unpack.done)
+        _priority = State(initialValue: unpack.importance)
+        _hasDeadline = State(initialValue: unpack.deadline != nil)
+        _deadline = State(initialValue: unpack.deadline ?? .now.tommorow!)
         self.creationDate = unpack.createdTime
         self.onSave = onSave
         self.onDelete = onDelete
