@@ -31,6 +31,8 @@
 		0A8CFA582C2FB8DF00A9F549 /* TaskListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A8CFA572C2FB8DF00A9F549 /* TaskListView.swift */; };
 		0AB1301C2C22010E00816981 /* FileCache.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0AB1301B2C22010E00816981 /* FileCache.swift */; };
 		0AB1301E2C2285D900816981 /* JsonParsing.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0AB1301D2C2285D900816981 /* JsonParsing.swift */; };
+		0AFBE76C2C388E4A001F1C1F /* CalendarRepresentable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0AFBE76B2C388E4A001F1C1F /* CalendarRepresentable.swift */; };
+		0AFBE76E2C388ECD001F1C1F /* CalendarView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0AFBE76D2C388ECD001F1C1F /* CalendarView.swift */; };
 		0AFEA7992C29A65500A5AED5 /* TodoItemView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0AFEA7982C29A65500A5AED5 /* TodoItemView.swift */; };
 		0AFEA79C2C29A71100A5AED5 /* Date.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0AFEA79B2C29A71100A5AED5 /* Date.swift */; };
 /* End PBXBuildFile section */
@@ -77,6 +79,8 @@
 		0A8CFA572C2FB8DF00A9F549 /* TaskListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TaskListView.swift; sourceTree = "<group>"; };
 		0AB1301B2C22010E00816981 /* FileCache.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FileCache.swift; sourceTree = "<group>"; };
 		0AB1301D2C2285D900816981 /* JsonParsing.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JsonParsing.swift; sourceTree = "<group>"; };
+		0AFBE76B2C388E4A001F1C1F /* CalendarRepresentable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalendarRepresentable.swift; sourceTree = "<group>"; };
+		0AFBE76D2C388ECD001F1C1F /* CalendarView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalendarView.swift; sourceTree = "<group>"; };
 		0AFEA7982C29A65500A5AED5 /* TodoItemView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TodoItemView.swift; sourceTree = "<group>"; };
 		0AFEA79B2C29A71100A5AED5 /* Date.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Date.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -167,6 +171,7 @@
 				0A2C5B4F2C26097A007D8889 /* Parsers */,
 				0A8CFA562C2FB8A800A9F549 /* ItemView */,
 				0A8CFA592C2FC20900A9F549 /* iPad Integration */,
+				0AFBE76F2C388ED4001F1C1F /* CalendarView */,
 			);
 			path = "ToDo App";
 			sourceTree = "<group>";
@@ -214,6 +219,15 @@
 				0A8CFA572C2FB8DF00A9F549 /* TaskListView.swift */,
 			);
 			path = "iPad Integration";
+			sourceTree = "<group>";
+		};
+		0AFBE76F2C388ED4001F1C1F /* CalendarView */ = {
+			isa = PBXGroup;
+			children = (
+				0AFBE76D2C388ECD001F1C1F /* CalendarView.swift */,
+				0AFBE76B2C388E4A001F1C1F /* CalendarRepresentable.swift */,
+			);
+			path = CalendarView;
 			sourceTree = "<group>";
 		};
 		0AFEA79A2C29A70400A5AED5 /* Extensions */ = {
@@ -363,6 +377,8 @@
 			buildActionMask = 2147483647;
 			files = (
 				0A39EE672C21A95400DD14AE /* ContentView.swift in Sources */,
+				0AFBE76C2C388E4A001F1C1F /* CalendarRepresentable.swift in Sources */,
+				0AFBE76E2C388ECD001F1C1F /* CalendarView.swift in Sources */,
 				0AB1301E2C2285D900816981 /* JsonParsing.swift in Sources */,
 				0A5619582C2F997300E2A5B4 /* TodoViewLayouts.swift in Sources */,
 				0A5619562C2F814700E2A5B4 /* Color.swift in Sources */,
@@ -554,7 +570,7 @@
 					"@executable_path/Frameworks",
 				);
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = "com.lroof.ToDo-App";
+				PRODUCT_BUNDLE_IDENTIFIER = com.lroof.ToDoApp;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
@@ -584,7 +600,7 @@
 					"@executable_path/Frameworks",
 				);
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = "com.lroof.ToDo-App";
+				PRODUCT_BUNDLE_IDENTIFIER = com.lroof.ToDoApp;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;

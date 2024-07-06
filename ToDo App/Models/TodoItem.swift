@@ -56,7 +56,7 @@ struct TodoItem: Hashable, Identifiable {
         self.id = UUID().uuidString
         self.text = ""
         self.importance = .basic
-        self.deadline = .now.tommorow
+        self.deadline = .now.nextDay
         self.done = false
         self.color = nil
         self.createdTime = .now
@@ -67,6 +67,9 @@ struct TodoItem: Hashable, Identifiable {
 extension TodoItem {
     var getCompleted: TodoItem {
         return TodoItem(id: id, text: text, importance: importance, deadline: deadline, done: true, color: color, creationDate: createdTime, lastChangeDate: changedTime)
+    }
+    var getIncompleted: TodoItem {
+        return TodoItem(id: id, text: text, importance: importance, deadline: deadline, done: false, color: color, creationDate: createdTime, lastChangeDate: changedTime)
     }
 }
 

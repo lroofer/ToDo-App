@@ -33,7 +33,7 @@ struct TodoItemView: View {
         _completed = State(initialValue: unpack.done)
         _priority = State(initialValue: unpack.importance)
         _hasDeadline = State(initialValue: unpack.deadline != nil)
-        _deadline = State(initialValue: unpack.deadline ?? .now.tommorow!)
+        _deadline = State(initialValue: unpack.deadline ?? .now.nextDay!)
         self.creationDate = unpack.createdTime
         self.onSave = onSave
         self.onDelete = onDelete

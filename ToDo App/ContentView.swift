@@ -13,7 +13,7 @@ struct ContentView: View {
     @State var addNewShow = false
     @State var showCompleted = false
     @State var preferImportance = false
-    
+    @State var showCalendarView = false
     @State private var selectedTask: String?
     
     var body: some View {
@@ -21,10 +21,7 @@ struct ContentView: View {
             List(selection: $selectedTask){
                 Section(header: HStack {
                     Text("Completed - \(todos.countCompleted)")
-                    Spacer()
-//                    Button(showCompleted ? "Hide" : "Show") {
-//                        showCompleted.toggle()
-//                    }
+                    //Spacer()
                 }
                     .font(.callout)
                     .textCase(.none)
@@ -108,27 +105,23 @@ struct ContentView: View {
                         }
                         
                     }
-    
+                    
                     
                     Button("New") {
                         addNewShow.toggle()
                     }
-                        .foregroundStyle(.secondary)
+                    .foregroundStyle(.secondary)
                 }
                 
             }
-            .overlay(alignment: .bottom) {
-                Button("+") {
-                    addNewShow.toggle()
-                }
-                .frame(width: 44, height: 44)
-                .font(.largeTitle)
-                .foregroundStyle(.white)
-                .background(.blue)
-                .clipShape(Circle())
-            }
+            
             .toolbar {
-                ToolbarItem(placement: .topBarTrailing) {
+                ToolbarItemGroup(placement: .topBarTrailing) {
+                    Button(action: {
+                        showCalendarView = true
+                    }, label: {
+                        Image(systemName: "calendar")
+                    })
                     Menu {
                         Button((showCompleted ? "Hide" : "Show") + " Completed") {
                             showCompleted.toggle()
@@ -144,9 +137,22 @@ struct ContentView: View {
                     } label: {
                         Label("Choose category", systemImage: "line.3.horizontal.decrease.circle")
                     }
-                
+                    
                 }
             }
+            .sheet(isPresented: $showCalendarView, content: {
+                CalendarRepresentable(model: todos)
+                    .overlay(alignment: .bottom) {
+                        Button("+") {
+                            addNewShow.toggle()
+                        }
+                        .frame(width: 44, height: 44)
+                        .font(.largeTitle)
+                        .foregroundStyle(.white)
+                        .background(.blue)
+                        .clipShape(Circle())
+                    }
+            })
             .navigationTitle("My tasks")
         }
         .sheet(isPresented: $addNewShow, onDismiss: {
@@ -159,6 +165,17 @@ struct ContentView: View {
             } else {
                 TodoItemView(onSave: saveItem, onDelete: {_ in})
             }
+        }
+        
+        .overlay(alignment: .bottom) {
+            Button("+") {
+                addNewShow.toggle()
+            }
+            .frame(width: 44, height: 44)
+            .font(.largeTitle)
+            .foregroundStyle(.white)
+            .background(.blue)
+            .clipShape(Circle())
         }
     }
     func saveItem(newItem: TodoItem) {
