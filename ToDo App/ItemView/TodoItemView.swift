@@ -20,12 +20,15 @@ struct TodoItemView: View {
     @State var showCalendar: Bool = false
     @State var showColorPicker: Bool = false
     @State var priority: TodoItem.PriorityChoices = .basic
+    
+    @Binding var showView: Bool
+    
     let redactedId: String
     let creationDate: Date
     private let onSave: (TodoItem)->Void
     private let onDelete: (String)->Void
 
-    init(unpack: TodoItem, onSave: @escaping (TodoItem)->Void, onDelete: @escaping (String)->Void) {
+    init(unpack: TodoItem, showView: Binding<Bool>, onSave: @escaping (TodoItem)->Void, onDelete: @escaping (String)->Void) {
         self.redactedId = unpack.id
         _text = State(initialValue: unpack.text)
         _color = State(initialValue: unpack.color ?? .primary)
@@ -34,12 +37,13 @@ struct TodoItemView: View {
         _priority = State(initialValue: unpack.importance)
         _hasDeadline = State(initialValue: unpack.deadline != nil)
         _deadline = State(initialValue: unpack.deadline ?? .now.nextDay!)
+        _showView = showView
         self.creationDate = unpack.createdTime
         self.onSave = onSave
         self.onDelete = onDelete
     }
-    init(onSave: @escaping (TodoItem)->Void, onDelete: @escaping (String)->Void) {
-        self.init(unpack: TodoItem(), onSave: onSave, onDelete: onDelete)
+    init(showView: Binding<Bool>, onSave: @escaping (TodoItem)->Void, onDelete: @escaping (String)->Void) {
+        self.init(unpack: TodoItem(), showView: showView, onSave: onSave, onDelete: onDelete)
     }
     var body: some View {
         NavigationStack {
@@ -65,8 +69,6 @@ struct TodoItemView: View {
                                 Image(systemName: "arrow.down").tag(TodoItem.PriorityChoices.low)
                                 Text("None").tag(TodoItem.PriorityChoices.basic)
                                 Image(systemName: "exclamationmark.2")
-                                    //.renderingMode(.template)
-                                    //.foregroundStyle(.red, .blue)
                                     .tag(TodoItem.PriorityChoices.important)
                             }
                             .pickerStyle(.segmented)
@@ -160,6 +162,14 @@ struct TodoItemView: View {
                             dismiss()
                         }
                     }
+                } else {
+                    ToolbarItem(placement: .topBarLeading) {
+                        Button {
+                            showView = false
+                        } label: {
+                            Image(systemName: "xmark")
+                        }
+                    }
                 }
                 
             }
@@ -170,5 +180,5 @@ struct TodoItemView: View {
 }
 
 #Preview {
-    TodoItemView(onSave: {_ in}, onDelete: {_ in})
+    TodoItemView(showView: .constant(true), onSave: {_ in}, onDelete: {_ in})
 }

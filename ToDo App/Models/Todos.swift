@@ -35,6 +35,9 @@ class Todos: ObservableObject {
     func removeItem(with id: String) {
         items.removeValue(forKey: id)
     }
+    func saveItem(newItem: TodoItem) {
+        setItem(with: newItem.id, value: newItem)
+    }
     init() {
         items = [:]
         countCompleted = 0
