@@ -14,6 +14,7 @@ class Todos: ObservableObject {
         }
     }
     @Published var countCompleted: Int
+    @Published var selectedItem: TodoItem? = nil
     var groupedTasks: [Int: [TodoItem]] {
         var dict = [Int:[TodoItem]]()
         for task in items {

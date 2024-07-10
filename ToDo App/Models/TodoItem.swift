@@ -36,12 +36,7 @@ struct TodoItem: Hashable, Identifiable {
     let color: Color?
     let createdTime: Date
     let changedTime: Date?
-    func hash(into hasher: inout Hasher) {
-        hasher.combine(id)
-    }
-    static func == (lhs: TodoItem, rhs: TodoItem) -> Bool {
-        return lhs.id == rhs.id
-    }
+    
     init(id: String?, text: String, importance: PriorityChoices, deadline: Date?, done: Bool, color: Color?, creationDate: Date, lastChangeDate: Date?) {
         self.id = id ?? UUID().uuidString
         self.text = text

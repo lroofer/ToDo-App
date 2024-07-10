@@ -14,9 +14,9 @@ struct TasksListView: View {
     @Binding var showCalendarView: Bool
     @State var showCompleted = false
     @State var preferImportance = false
-    @Binding var selectedTask: String?
+    @Binding var selectedTask: TodoItem?
     
-    init(todos: Todos, addNewShow: Binding<Bool>, selectedTask: Binding<String?>, showCalendarView: Binding<Bool>) {
+    init(todos: Todos, addNewShow: Binding<Bool>, selectedTask: Binding<TodoItem?>, showCalendarView: Binding<Bool>) {
         self.todos = todos
         self._addNewShow = addNewShow
         self._selectedTask = selectedTask
@@ -70,7 +70,11 @@ struct TasksListView: View {
     var body: some View {
         NavigationStack {
             ZStack {
-                listView
+                if showCalendarView {
+                    CalendarRepresentable(showTaskView: $showCalendarView, model: todos)
+                } else {
+                    listView
+                }
                 VStack {
                     Spacer()
                     buttonOverlay
@@ -79,20 +83,22 @@ struct TasksListView: View {
             .toolbar {
                 ToolbarItemGroup(placement: .topBarTrailing) {
                     Button {
-                        showCalendarView = true
+                        showCalendarView.toggle()
                     } label : {
-                        Image(systemName: "calendar")
+                        Image(systemName: showCalendarView ? "tray.fill" : "calendar")
                     }
                     Menu {
                         Button((showCompleted ? "Hide" : "Show") + " Completed") {
                             showCompleted.toggle()
                         }
-                        Menu ("Sort by") {
-                            Button("Most recent added") {
-                                preferImportance = false
-                            }
-                            Button("Most important") {
-                                preferImportance = true
+                        if !showCalendarView {
+                            Menu ("Sort by") {
+                                Button("Most recent added") {
+                                    preferImportance = false
+                                }
+                                Button("Most important") {
+                                    preferImportance = true
+                                }
                             }
                         }
                     } label: {

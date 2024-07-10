@@ -11,9 +11,11 @@ struct TodoItemView: View {
     @Environment(\.dismiss) var dismiss
     @FocusState var isInputActive: Bool
 
+    @State var redactedId: String = ""
     @State var hasDeadline: Bool = false
     @State var hasCustomColor: Bool = false
     @State var deadline: Date = .now
+    @State var creationDate: Date = .now
     @State var text: String = ""
     @State var completed: Bool = false
     @State var color: Color = .white
@@ -22,35 +24,33 @@ struct TodoItemView: View {
     @State var priority: TodoItem.PriorityChoices = .basic
     
     @Binding var showView: Bool
+    @Binding var selectedTask: TodoItem?
     
-    let redactedId: String
-    let creationDate: Date
     private let onSave: (TodoItem)->Void
     private let onDelete: (String)->Void
 
-    init(unpack: TodoItem, showView: Binding<Bool>, onSave: @escaping (TodoItem)->Void, onDelete: @escaping (String)->Void) {
-        self.redactedId = unpack.id
-        _text = State(initialValue: unpack.text)
-        _color = State(initialValue: unpack.color ?? .primary)
-        _hasCustomColor = State(initialValue: unpack.color != nil)
-        _completed = State(initialValue: unpack.done)
-        _priority = State(initialValue: unpack.importance)
-        _hasDeadline = State(initialValue: unpack.deadline != nil)
-        _deadline = State(initialValue: unpack.deadline ?? .now.nextDay!)
+    init(showView: Binding<Bool>, selectedTask: Binding<TodoItem?>, onSave: @escaping (TodoItem)->Void, onDelete: @escaping (String)->Void) {
+        let newItem = selectedTask.wrappedValue ?? TodoItem()
+        redactedId = newItem.id
+        text = newItem.text
+        color = newItem.color ?? .blue
+        hasCustomColor = newItem.color != nil
+        completed = newItem.done
+        priority = newItem.importance
+        hasDeadline = newItem.deadline != nil
+        deadline = newItem.deadline ?? .now.nextDay!
         _showView = showView
-        self.creationDate = unpack.createdTime
+        _selectedTask = selectedTask
+        self.creationDate = newItem.createdTime
         self.onSave = onSave
         self.onDelete = onDelete
-    }
-    init(showView: Binding<Bool>, onSave: @escaping (TodoItem)->Void, onDelete: @escaping (String)->Void) {
-        self.init(unpack: TodoItem(), showView: showView, onSave: onSave, onDelete: onDelete)
     }
     var body: some View {
         NavigationStack {
             ScrollView {
                 TodoViewLayout(hasCustomColor: $hasCustomColor, color: $color, focusState: _isInputActive, textField: {
                     TextField("What do you have to get done?", text: $text, axis: .vertical)
-                        .lineLimit(6...50)
+                        .lineLimit(6...)
                         .focused($isInputActive)
                         .toolbar {
                             ToolbarItemGroup(placement: .keyboard) {
@@ -118,8 +118,6 @@ struct TodoItemView: View {
                             Divider()
                             DatePicker("Choose time", selection: $deadline, in: Date.now..., displayedComponents: .date)
                                 .datePickerStyle(.graphical)
-                                //.transition(.asymmetric(insertion: .scale, removal: .opacity))
-                                
                         }
                         Spacer()
                     }
@@ -166,12 +164,25 @@ struct TodoItemView: View {
                     ToolbarItem(placement: .topBarLeading) {
                         Button {
                             showView = false
+                            selectedTask = nil
                         } label: {
                             Image(systemName: "xmark")
                         }
                     }
                 }
                 
+            }
+            .onChange(of: selectedTask) { oldValue in
+                let newItem = selectedTask ?? TodoItem()
+                redactedId = newItem.id
+                text = newItem.text
+                color = newItem.color ?? .blue
+                hasCustomColor = newItem.color != nil
+                completed = newItem.done
+                priority = newItem.importance
+                hasDeadline = newItem.deadline != nil
+                deadline = newItem.deadline ?? .now.nextDay!
+                creationDate = newItem.createdTime
             }
             .scrollDismissesKeyboard(.interactively)
         }
@@ -180,5 +191,5 @@ struct TodoItemView: View {
 }
 
 #Preview {
-    TodoItemView(showView: .constant(true), onSave: {_ in}, onDelete: {_ in})
+    TodoItemView(showView: .constant(true), selectedTask: .constant(.init()), onSave: {_ in}, onDelete: {_ in})
 }
