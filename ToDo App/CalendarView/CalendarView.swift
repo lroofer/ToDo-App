@@ -10,6 +10,7 @@ import UIKit
 
 class CalendarView: UIViewController {
     var model: Todos
+    var showTaskView: Bool
     var tableView: UITableView
     
     var selected: Int = 0
@@ -27,9 +28,10 @@ class CalendarView: UIViewController {
         return collectionView
     }()
     
-    init(model: Todos) {
+    init(model: Todos, showTaskView: Bool) {
         self.model = model
         self.tableView = UITableView()
+        self.showTaskView = showTaskView
         tableView.translatesAutoresizingMaskIntoConstraints = false
         super.init(nibName: nil, bundle: nil)
     }
@@ -40,7 +42,6 @@ class CalendarView: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        self.title = "My tasks"
         
         tableView.dataSource = self
         tableView.delegate = self
@@ -94,6 +95,19 @@ extension CalendarView: UITableViewDataSource, UITableViewDelegate {
         cell.contentConfiguration = content
         return cell
     }
+    
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        let dates = model.groupedTasks.keys.sorted()
+        if let task = model.groupedTasks[dates[indexPath.section]]?[indexPath.row] {
+            model.selectedItem = task
+            showTaskView = true
+        }
+        loadViewIfNeeded()
+        DispatchQueue.main.async {
+            tableView.reloadData()
+        }
+    }
+    
     func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
         let date = model.groupedTasks.keys.sorted()[section]
         return date == 0 ? "Other" : Date.getRepresentation(from: date)
