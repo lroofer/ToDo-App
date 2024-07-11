@@ -10,8 +10,8 @@ import UIKit
 
 class CalendarView: UIViewController {
     var model: Todos
-    var showTaskView: Bool
     var tableView: UITableView
+    var updateState: (Bool, TodoItem) -> Void
     
     var selected: Int = 0
     
@@ -28,11 +28,11 @@ class CalendarView: UIViewController {
         return collectionView
     }()
     
-    init(model: Todos, showTaskView: Bool) {
+    init(model: Todos, updateState: @escaping (Bool, TodoItem) -> Void) {
         self.model = model
         self.tableView = UITableView()
-        self.showTaskView = showTaskView
         tableView.translatesAutoresizingMaskIntoConstraints = false
+        self.updateState = updateState
         super.init(nibName: nil, bundle: nil)
     }
     
@@ -100,7 +100,7 @@ extension CalendarView: UITableViewDataSource, UITableViewDelegate {
         let dates = model.groupedTasks.keys.sorted()
         if let task = model.groupedTasks[dates[indexPath.section]]?[indexPath.row] {
             model.selectedItem = task
-            showTaskView = true
+            updateState(true, task)
         }
         loadViewIfNeeded()
         DispatchQueue.main.async {

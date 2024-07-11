@@ -71,7 +71,7 @@ struct TasksListView: View {
         NavigationStack {
             ZStack {
                 if showCalendarView {
-                    CalendarRepresentable(showTaskView: $showCalendarView, model: todos)
+                    CalendarRepresentable(showTaskView: $addNewShow, selectedTask: $selectedTask, model: todos)
                 } else {
                     listView
                 }
