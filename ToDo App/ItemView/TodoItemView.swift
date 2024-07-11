@@ -129,6 +129,8 @@ struct TodoItemView: View {
                         HStack {
                             Button("Delete") {
                                 onDelete(redactedId)
+                                selectedTask = nil
+                                showView = false
                                 dismiss()
                             }
                             .foregroundColor(.red)
@@ -150,6 +152,8 @@ struct TodoItemView: View {
                 ToolbarItem(placement: .topBarTrailing) {
                     Button("Save") {
                         onSave(TodoItem(id: redactedId, text: text, importance: priority, deadline: hasDeadline ? deadline : nil, done: completed, color: hasCustomColor ? color : nil, creationDate: creationDate, lastChangeDate: .now))
+                        selectedTask = nil
+                        showView = false
                         dismiss()
                     }
                     .disabled(text.isEmpty)

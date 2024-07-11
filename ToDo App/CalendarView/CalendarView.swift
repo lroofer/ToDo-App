@@ -99,7 +99,6 @@ extension CalendarView: UITableViewDataSource, UITableViewDelegate {
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         let dates = model.groupedTasks.keys.sorted()
         if let task = model.groupedTasks[dates[indexPath.section]]?[indexPath.row] {
-            model.selectedItem = task
             updateState(true, task)
         }
         loadViewIfNeeded()

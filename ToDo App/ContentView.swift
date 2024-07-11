@@ -13,11 +13,12 @@ struct ContentView: View {
     @State var showCalendarView = false
     @State private var selectedTask: TodoItem?
     @State private var columnVisibility = NavigationSplitViewVisibility.all
+    @StateObject var state = CurrentState()
 
     var body: some View {
         // MARK: Specs require split view only for iPad.
         if ToDo_AppApp.idiom != .pad {
-            TasksListView(todos: todos, addNewShow: $addNewShow, selectedTask: $selectedTask, showCalendarView: $showCalendarView)
+            TasksListView(todos: todos, state: state, addNewShow: $addNewShow, selectedTask: $selectedTask, showCalendarView: $showCalendarView)
                 .sheet(isPresented: $addNewShow) {
                     selectedTask = nil
                 } content: {
@@ -31,7 +32,7 @@ struct ContentView: View {
                 }
         } else {
             NavigationSplitView (columnVisibility: $columnVisibility) {
-                TasksListView(todos: todos, addNewShow: $addNewShow, selectedTask: $selectedTask, showCalendarView: $showCalendarView)
+                TasksListView(todos: todos, state: state, addNewShow: $addNewShow, selectedTask: $selectedTask, showCalendarView: $showCalendarView)
             } detail: {
                 if !addNewShow {
                     Text("None of the tasks are selected")

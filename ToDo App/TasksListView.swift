@@ -10,17 +10,19 @@ import SwiftUI
 struct TasksListView: View {
     @Environment(\.colorScheme) var colorScheme
     @ObservedObject var todos: Todos
+    @ObservedObject var state: CurrentState
     @Binding var addNewShow: Bool
     @Binding var showCalendarView: Bool
     @State var showCompleted = false
     @State var preferImportance = false
     @Binding var selectedTask: TodoItem?
     
-    init(todos: Todos, addNewShow: Binding<Bool>, selectedTask: Binding<TodoItem?>, showCalendarView: Binding<Bool>) {
+    init(todos: Todos, state: CurrentState, addNewShow: Binding<Bool>, selectedTask: Binding<TodoItem?>, showCalendarView: Binding<Bool>) {
         self.todos = todos
         self._addNewShow = addNewShow
         self._selectedTask = selectedTask
         self._showCalendarView = showCalendarView
+        self.state = state
     }
     
     func toggleNewView() {
@@ -71,7 +73,7 @@ struct TasksListView: View {
         NavigationStack {
             ZStack {
                 if showCalendarView {
-                    CalendarRepresentable(showTaskView: $addNewShow, selectedTask: $selectedTask, model: todos)
+                    CalendarRepresentable(showTaskView: $addNewShow, selectedTask: $selectedTask, model: todos, changeState: state)
                 } else {
                     listView
                 }
@@ -112,5 +114,5 @@ struct TasksListView: View {
 }
 
 #Preview {
-    TasksListView(todos: Todos(), addNewShow: .constant(false), selectedTask: .constant(nil), showCalendarView: .constant(false))
+    TasksListView(todos: Todos(), state: .init(), addNewShow: .constant(false), selectedTask: .constant(nil), showCalendarView: .constant(false))
 }
