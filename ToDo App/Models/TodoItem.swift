@@ -14,7 +14,7 @@ struct TodoItem: Hashable, Identifiable {
         case basic
         case important
         static func getPriorityFrom(string type: String) -> PriorityChoices? {
-            switch(type) {
+            switch type {
             case PriorityChoices.low.rawValue:
                 return .low
             case "":
@@ -28,6 +28,12 @@ struct TodoItem: Hashable, Identifiable {
             }
         }
     }
+    func hash(into hasher: inout Hasher) {
+        hasher.combine(id)
+    }
+    static func == (lhs: TodoItem, rhs: TodoItem) -> Bool {
+        return lhs.id == rhs.id
+    }
     let id: String
     let text: String
     let importance: PriorityChoices
@@ -36,8 +42,8 @@ struct TodoItem: Hashable, Identifiable {
     let color: Color?
     let createdTime: Date
     let changedTime: Date?
-    
-    init(id: String?, text: String, importance: PriorityChoices, deadline: Date?, done: Bool, color: Color?, creationDate: Date, lastChangeDate: Date?) {
+    init(id: String?, text: String, importance: PriorityChoices, deadline: Date?, done: Bool,
+         color: Color?, creationDate: Date, lastChangeDate: Date?) {
         self.id = id ?? UUID().uuidString
         self.text = text
         self.importance = importance
@@ -61,10 +67,11 @@ struct TodoItem: Hashable, Identifiable {
 
 extension TodoItem {
     var getCompleted: TodoItem {
-        return TodoItem(id: id, text: text, importance: importance, deadline: deadline, done: true, color: color, creationDate: createdTime, lastChangeDate: changedTime)
+        return TodoItem(id: id, text: text, importance: importance, deadline: deadline,
+                        done: true, color: color, creationDate: createdTime, lastChangeDate: changedTime)
     }
     var getIncompleted: TodoItem {
-        return TodoItem(id: id, text: text, importance: importance, deadline: deadline, done: false, color: color, creationDate: createdTime, lastChangeDate: changedTime)
+        return TodoItem(id: id, text: text, importance: importance, deadline: deadline,
+                        done: false, color: color, creationDate: createdTime, lastChangeDate: changedTime)
     }
 }
-

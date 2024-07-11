@@ -13,8 +13,8 @@ extension TodoItem {
         case incorrectSignatureIn(row: Int)
         case wrongPropertyIn(row: Int, property: TodoItemStoredFields)
     }
-    
-    private static func parseDateFrom(string: String, indexOfRow index: Int, property: TodoItemStoredFields) throws -> Date? {
+    private static func parseDateFrom(string: String, indexOfRow index: Int,
+                                      property: TodoItemStoredFields) throws -> Date? {
         if string == "" {
             return nil
         }
@@ -23,15 +23,13 @@ extension TodoItem {
         }
         return date
     }
-    
-    private static func parseBoolFrom(string: String, indexOfRow index: Int, property: TodoItemStoredFields) throws -> Bool {
+    private static func parseBoolFrom(string: String, indexOfRow index: Int,
+                                      property: TodoItemStoredFields) throws -> Bool {
         if let boolValue = Bool.getBool(fromString: string) {
             return boolValue
         }
         throw CSVParsingError.wrongPropertyIn(row: index, property: property)
-        
     }
-    
     /// returns the set of items decoded from the csv file.
     static func getSetOfItemsFrom(csvFile url: URL, linesOfHeader: Int = 0) throws -> Set<TodoItem> {
         guard let csvFile = try? String(contentsOf: url, encoding: .utf8) else {
@@ -64,9 +62,19 @@ extension TodoItem {
             guard let importance = PriorityChoices.getPriorityFrom(string: values[2]) else {
                 throw CSVParsingError.wrongPropertyIn(row: indexOfRow, property: .importance)
             }
-            
-            
-            items.insert(TodoItem(id: values[0].isEmpty ? nil : values[0], text: values[1], importance: importance, deadline: try parseDateFrom(string: values[3], indexOfRow: indexOfRow, property: .deadline), done: try parseBoolFrom(string: values[4], indexOfRow: indexOfRow, property: .done), color: .black, creationDate: try parseDateFrom(string: values[5], indexOfRow: indexOfRow, property: .createdTime) ?? Date.now, lastChangeDate: try parseDateFrom(string: values[6], indexOfRow: indexOfRow, property: .changedTime)))
+            items.insert(
+                TodoItem(
+                    id: values[0].isEmpty ? nil : values[0],
+                    text: values[1], importance: importance,
+                    deadline: try parseDateFrom(string: values[3], indexOfRow: indexOfRow, property: .deadline),
+                    done: try parseBoolFrom(string: values[4], indexOfRow: indexOfRow, property: .done),
+                    color: .black,
+                    creationDate: try parseDateFrom(
+                        string: values[5], indexOfRow: indexOfRow, property: .createdTime) ?? Date.now,
+                    lastChangeDate: try parseDateFrom(
+                        string: values[6], indexOfRow: indexOfRow, property: .changedTime)
+                )
+            )
         }
         return items
     }

@@ -23,14 +23,12 @@ struct TodoItemView: View {
     @State var showCalendar: Bool = false
     @State var showColorPicker: Bool = false
     @State var priority: TodoItem.PriorityChoices = .basic
-    
     @Binding var showView: Bool
     @Binding var selectedTask: TodoItem?
-    
-    private let onSave: (TodoItem)->Void
-    private let onDelete: (String)->Void
-
-    init(showView: Binding<Bool>, selectedTask: Binding<TodoItem?>, onSave: @escaping (TodoItem)->Void, onDelete: @escaping (String)->Void) {
+    private let onSave: (TodoItem) -> Void
+    private let onDelete: (String) -> Void
+    init(showView: Binding<Bool>, selectedTask: Binding<TodoItem?>,
+         onSave: @escaping (TodoItem) -> Void, onDelete: @escaping (String) -> Void) {
         let newItem = selectedTask.wrappedValue ?? TodoItem()
         redactedId = newItem.id
         text = newItem.text
@@ -57,7 +55,6 @@ struct TodoItemView: View {
                         .toolbar {
                             ToolbarItemGroup(placement: .keyboard) {
                                 Spacer()
-                                
                                 Button("Done") {
                                     isInputActive = false
                                     DDLogDebug("Keyboard is hidden")
@@ -85,7 +82,7 @@ struct TodoItemView: View {
                                         showColorPicker.toggle()
                                     }
                                 } label: {
-                                    VStack (alignment: .leading) {
+                                    VStack(alignment: .leading) {
                                         Text("Custom color")
                                         Text(hasCustomColor ? color.toHex() ?? "custom" : "(none)")
                                             .foregroundStyle(hasCustomColor ? color : .secondary)
@@ -105,7 +102,7 @@ struct TodoItemView: View {
                                         showCalendar.toggle()
                                     }
                                 } label: {
-                                    VStack (alignment: .leading){
+                                    VStack(alignment: .leading) {
                                         Text("Due to")
                                         if hasDeadline {
                                             Text(deadline.formatted(date: .abbreviated, time: .omitted))
@@ -145,7 +142,6 @@ struct TodoItemView: View {
                     .background()
                     .clipShape(RoundedRectangle(cornerRadius: 16))
                 })
-                
                 .padding()
             }
             .background(.thickMaterial)
@@ -154,14 +150,22 @@ struct TodoItemView: View {
             .toolbar {
                 ToolbarItem(placement: .topBarTrailing) {
                     Button("Save") {
-                        onSave(TodoItem(id: redactedId, text: text, importance: priority, deadline: hasDeadline ? deadline : nil, done: completed, color: hasCustomColor ? color : nil, creationDate: creationDate, lastChangeDate: .now))
+                        onSave(TodoItem(
+                            id: redactedId,
+                            text: text,
+                            importance: priority,
+                            deadline: hasDeadline ? deadline : nil,
+                            done: completed,
+                            color: hasCustomColor ? color : nil,
+                            creationDate: creationDate,
+                            lastChangeDate: .now))
                         selectedTask = nil
                         showView = false
                         dismiss()
                     }
                     .disabled(text.isEmpty)
                 }
-                if ToDo_AppApp.idiom != .pad {
+                if ToDoAppApp.idiom != .pad {
                     ToolbarItem(placement: .topBarLeading) {
                         Button("Cancel") {
                             dismiss()
@@ -177,9 +181,8 @@ struct TodoItemView: View {
                         }
                     }
                 }
-                
             }
-            .onChange(of: selectedTask) { oldValue in
+            .onChange(of: selectedTask) { _ in
                 let newItem = selectedTask ?? TodoItem()
                 redactedId = newItem.id
                 text = newItem.text

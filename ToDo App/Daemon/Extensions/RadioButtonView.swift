@@ -13,12 +13,11 @@ struct RadioButtonView: View {
     }
     private let state: RadioButtonState
     private let darkTheme: Bool
-    
+
     init(state: RadioButtonState, darkTheme: Bool = false) {
         self.state = state
         self.darkTheme = darkTheme
     }
-    
     var body: some View {
         Circle()
             .fill(innerCicleColor)

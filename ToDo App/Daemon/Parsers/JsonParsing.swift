@@ -19,7 +19,6 @@ extension TodoItem {
         case createdTime = "created_at"
         case changedTime = "changed_at"
     }
-    
     /// The method detects the given type and the converts it to the Data format.
     private static func convertToData(json: Any) -> Data? {
         if let json = json as? String {
@@ -27,12 +26,10 @@ extension TodoItem {
         }
         return json as? Data
     }
-    
     /// Generates a new task from the dictionary of values.
     init? (dict: [String: Any]) {
         let getValue = { (identifier: TodoItemStoredFields) in dict[identifier.rawValue]
         }
-        
         id = (getValue(.id) as? String) ?? UUID().uuidString
         guard let text = getValue(.text) as? String else {
             return nil
@@ -52,7 +49,6 @@ extension TodoItem {
         createdTime = Date.getDate(fromStringLocale: getValue(.createdTime) as? String) ?? Date.now
         changedTime = Date.getDate(fromStringLocale: getValue(.changedTime) as? String)
     }
-    
     static func parse(json: Any) -> TodoItem? {
         guard let jsonData = convertToData(json: json),
               let jsonObject = try? JSONSerialization.jsonObject(with: jsonData) as? [String: Any] else {
@@ -60,7 +56,6 @@ extension TodoItem {
         }
         return TodoItem(dict: jsonObject)
     }
-    
     var dict: [String: Any] {
         var object = [String: Any]()
         let setValue = {(identifier: TodoItemStoredFields, value: Any) in object[identifier.rawValue] = value}
@@ -79,7 +74,6 @@ extension TodoItem {
         }
         return object
     }
-    
     var json: Any {
         return (try? JSONSerialization.data(withJSONObject: dict)) ?? Data()
     }
@@ -96,7 +90,7 @@ extension Date {
 
 extension Bool {
     static func getBool(fromString string: String?) -> Bool? {
-        switch(string) {
+        switch string {
         case "true":
             return true
         case "false":

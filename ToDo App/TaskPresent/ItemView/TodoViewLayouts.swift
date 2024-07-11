@@ -10,13 +10,12 @@ import SwiftUI
 struct TodoViewLayout<Content: View, Content2: View>: View {
     @Environment(\.horizontalSizeClass) var horizontalSizeClass
     @FocusState var focusState: Bool
-    
     @Binding var hasCustomColor: Bool
     @Binding var color: Color
     let textField: Content?
     let controls: Content2?
-    
-    init(hasCustomColor: Binding<Bool>, color: Binding<Color>, focusState: FocusState<Bool>, @ViewBuilder textField: () -> Content, @ViewBuilder controls: () -> Content2) {
+    init(hasCustomColor: Binding<Bool>, color: Binding<Color>, focusState: FocusState<Bool>,
+         @ViewBuilder textField: () -> Content, @ViewBuilder controls: () -> Content2) {
         self._focusState = focusState
         self._hasCustomColor = hasCustomColor
         self._color = color
@@ -27,7 +26,7 @@ struct TodoViewLayout<Content: View, Content2: View>: View {
         if horizontalSizeClass == .compact {
             VStack {
                 HStack {
-                    VStack (alignment: .leading) {
+                    VStack(alignment: .leading) {
                         textField
                     }
                     .frame(minHeight: 120, maxHeight: .infinity)
@@ -45,7 +44,7 @@ struct TodoViewLayout<Content: View, Content2: View>: View {
         } else {
             HStack {
                 HStack {
-                    VStack (alignment: .leading) {
+                    VStack(alignment: .leading) {
                         textField
                     }
                     .frame(minHeight: 120, maxHeight: .infinity)

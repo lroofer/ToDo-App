@@ -17,8 +17,9 @@ struct ContentView: View {
 
     var body: some View {
         // MARK: Specs require split view only for iPad.
-        if ToDo_AppApp.idiom != .pad {
-            TasksListView(todos: todos, state: state, addNewShow: $addNewShow, selectedTask: $selectedTask, showCalendarView: $showCalendarView)
+        if ToDoAppApp.idiom != .pad {
+            TasksListView(todos: todos, state: state, addNewShow: $addNewShow,
+                          selectedTask: $selectedTask, showCalendarView: $showCalendarView)
                 .sheet(isPresented: $addNewShow) {
                     selectedTask = nil
                 } content: {
@@ -27,27 +28,36 @@ struct ContentView: View {
                             todos.removeItem(with: id)
                         }
                     } else {
-                        TodoItemView(showView: $addNewShow, selectedTask: $selectedTask, onSave: todos.saveItem, onDelete: {_ in})
+                        TodoItemView(showView: $addNewShow,
+                                     selectedTask: $selectedTask,
+                                     onSave: todos.saveItem,
+                                     onDelete: {_ in})
                     }
                 }
         } else {
-            NavigationSplitView (columnVisibility: $columnVisibility) {
-                TasksListView(todos: todos, state: state, addNewShow: $addNewShow, selectedTask: $selectedTask, showCalendarView: $showCalendarView)
+            NavigationSplitView(columnVisibility: $columnVisibility) {
+                TasksListView(todos: todos, state: state, addNewShow: $addNewShow,
+                              selectedTask: $selectedTask, showCalendarView: $showCalendarView)
             } detail: {
                 if !addNewShow {
                     Text("None of the tasks are selected")
                 } else {
                     if selectedTask != nil {
-                        TodoItemView(showView: $addNewShow, selectedTask: $selectedTask, onSave: todos.saveItem, onDelete: todos.removeItem)
+                        TodoItemView(showView: $addNewShow,
+                                     selectedTask: $selectedTask,
+                                     onSave: todos.saveItem,
+                                     onDelete: todos.removeItem)
                     } else {
-                        TodoItemView(showView: $addNewShow, selectedTask: $selectedTask, onSave: todos.saveItem, onDelete: todos.removeItem)
+                        TodoItemView(showView: $addNewShow,
+                                     selectedTask: $selectedTask,
+                                     onSave: todos.saveItem,
+                                     onDelete: todos.removeItem)
                     }
                 }
             }
             .navigationSplitViewStyle(.balanced)
         }
     }
-    
 }
 
 #Preview {
