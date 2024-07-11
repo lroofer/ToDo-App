@@ -8,13 +8,18 @@
 import Foundation
 import SwiftUI
 
+class CurrentState: ObservableObject {
+    @Published var needsAnUpdate: Bool = false
+}
+
 struct CalendarRepresentable: UIViewControllerRepresentable {
     @Binding var showTaskView: Bool
     @Binding var selectedTask: TodoItem?
-    var model: Todos
+    @ObservedObject var model: Todos
+    @ObservedObject var changeState: CurrentState
     func makeUIViewController(context: Context) -> UINavigationController {
         return UINavigationController(rootViewController: CalendarView(model: model, updateState: { status, value in
-                showTaskView = status
+            showTaskView = status
             selectedTask = value
         }))
     }
