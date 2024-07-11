@@ -83,6 +83,7 @@
 		0AFBE76D2C388ECD001F1C1F /* CalendarView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalendarView.swift; sourceTree = "<group>"; };
 		0AFBE7A22C3DCAF4001F1C1F /* TaskCellView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TaskCellView.swift; sourceTree = "<group>"; };
 		0AFBE7AB2C3DD5F6001F1C1F /* Sorting.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Sorting.swift; sourceTree = "<group>"; };
+		0AFBE7AD2C3FAE30001F1C1F /* .gitignore */ = {isa = PBXFileReference; lastKnownFileType = text; path = .gitignore; sourceTree = "<group>"; };
 		0AFEA7982C29A65500A5AED5 /* TodoItemView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TodoItemView.swift; sourceTree = "<group>"; };
 		0AFEA79B2C29A71100A5AED5 /* Date.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Date.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -144,6 +145,7 @@
 		0A39EE582C21A95400DD14AE = {
 			isa = PBXGroup;
 			children = (
+				0AFBE7AD2C3FAE30001F1C1F /* .gitignore */,
 				0A39EE632C21A95400DD14AE /* ToDo App */,
 				0A39EE742C21A95500DD14AE /* ToDo AppTests */,
 				0A39EE7E2C21A95500DD14AE /* ToDo AppUITests */,
