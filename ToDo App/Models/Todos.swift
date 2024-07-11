@@ -6,6 +6,7 @@
 //
 
 import Foundation
+import CocoaLumberjackSwift
 
 class Todos: ObservableObject {
     @Published private(set) var items = [String: TodoItem]() {
@@ -31,11 +32,14 @@ class Todos: ObservableObject {
         }
         items[id] = value
         countCompleted += value.done ? 1 : 0
+        DDLogDebug("Task with id: \(id) has been updated")
     }
     func removeItem(with id: String) {
+        DDLogDebug("Task with id: \(id) has been removed")
         items.removeValue(forKey: id)
     }
     func saveItem(newItem: TodoItem) {
+        DDLogDebug("An attempt to create Task with id: \(newItem.id)")
         setItem(with: newItem.id, value: newItem)
     }
     init() {
