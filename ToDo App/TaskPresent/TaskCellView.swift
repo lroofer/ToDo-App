@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import CocoaLumberjackSwift
 
 struct TaskCellView: View {
     let item: TodoItem
@@ -16,6 +17,7 @@ struct TaskCellView: View {
     private var buttonControl: some View {
         Button {
             if !item.done {
+                DDLogDebug("An attempt to complete item(\(item.id) with checking the radio button in")
                 saveItem(item.getCompleted)
             }
         } label: {
@@ -63,6 +65,7 @@ struct TaskCellView: View {
             if !item.done {
                 Button {
                     if !item.done {
+                        DDLogDebug("An attempt to complete item(\(item.id) with a leading swipe")
                         saveItem(item.getCompleted)
                     }
                 } label: {
@@ -73,6 +76,7 @@ struct TaskCellView: View {
         }
         .swipeActions(edge: .trailing) {
             Button(role: .destructive) {
+                DDLogDebug("An attempt to remove item(\(item.id) with a trailing swipe")
                 removeItem(item.id)
             } label: {
                 Image(systemName: "trash.fill")

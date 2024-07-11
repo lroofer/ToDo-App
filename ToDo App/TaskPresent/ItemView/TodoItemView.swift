@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import CocoaLumberjackSwift
 
 struct TodoItemView: View {
     @Environment(\.dismiss) var dismiss
@@ -44,6 +45,7 @@ struct TodoItemView: View {
         self.creationDate = newItem.createdTime
         self.onSave = onSave
         self.onDelete = onDelete
+        DDLogDebug("View of \(redactedId) has been initiated")
     }
     var body: some View {
         NavigationStack {
@@ -58,6 +60,7 @@ struct TodoItemView: View {
                                 
                                 Button("Done") {
                                     isInputActive = false
+                                    DDLogDebug("Keyboard is hidden")
                                 }
                             }
                         }
@@ -187,6 +190,7 @@ struct TodoItemView: View {
                 hasDeadline = newItem.deadline != nil
                 deadline = newItem.deadline ?? .now.nextDay!
                 creationDate = newItem.createdTime
+                DDLogDebug("The item\(redactedId) has been updated")
             }
             .scrollDismissesKeyboard(.interactively)
         }

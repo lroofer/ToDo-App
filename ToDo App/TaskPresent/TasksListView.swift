@@ -6,16 +6,20 @@
 //
 
 import SwiftUI
+import CocoaLumberjackSwift
 
 struct TasksListView: View {
     @Environment(\.colorScheme) var colorScheme
+    
     @ObservedObject var todos: Todos
     @ObservedObject var state: CurrentState
+    
     @Binding var addNewShow: Bool
     @Binding var showCalendarView: Bool
+    @Binding var selectedTask: TodoItem?
+
     @State var showCompleted = false
     @State var preferImportance = false
-    @Binding var selectedTask: TodoItem?
     
     init(todos: Todos, state: CurrentState, addNewShow: Binding<Bool>, selectedTask: Binding<TodoItem?>, showCalendarView: Binding<Bool>) {
         self.todos = todos
@@ -28,6 +32,7 @@ struct TasksListView: View {
     func toggleNewView() {
         selectedTask = nil
         addNewShow = true
+        DDLogDebug("Task view has been toggled")
     }
     
     private var buttonOverlay: some View {
@@ -86,20 +91,24 @@ struct TasksListView: View {
                 ToolbarItemGroup(placement: .topBarTrailing) {
                     Button {
                         showCalendarView.toggle()
+                        DDLogVerbose("Switching UI-Kit with SwiftUI")
                     } label : {
                         Image(systemName: showCalendarView ? "tray.fill" : "calendar")
                     }
                     Menu {
                         Button((showCompleted ? "Hide" : "Show") + " Completed") {
                             showCompleted.toggle()
+                            DDLogDebug("Customized view: showCompleted \(showCompleted)")
                         }
                         if !showCalendarView {
                             Menu ("Sort by") {
                                 Button("Most recent added") {
                                     preferImportance = false
+                                    DDLogVerbose("Sort by most recent added")
                                 }
                                 Button("Most important") {
                                     preferImportance = true
+                                    DDLogVerbose("Sort by most important")
                                 }
                             }
                         }
