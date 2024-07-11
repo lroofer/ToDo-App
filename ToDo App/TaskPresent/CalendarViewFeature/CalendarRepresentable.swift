@@ -23,7 +23,6 @@ struct CalendarRepresentable: UIViewControllerRepresentable {
             selectedTask = value
         }))
     }
-    
     func updateUIViewController(_ uiViewController: UIViewControllerType, context: Context) {
         if let calendar = uiViewController.viewControllers.first as? CalendarView {
             calendar.model = model

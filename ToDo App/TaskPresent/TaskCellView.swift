@@ -13,7 +13,6 @@ struct TaskCellView: View {
     let darkScheme: Bool
     let saveItem: (TodoItem) -> Void
     let removeItem: (String) -> Void
-    
     private var buttonControl: some View {
         Button {
             if !item.done {
@@ -26,9 +25,8 @@ struct TaskCellView: View {
         .buttonBorderShape(.roundedRectangle)
         .buttonStyle(.plain)
     }
-    
     private var cellText: some View {
-        VStack (alignment: .leading) {
+        VStack(alignment: .leading) {
             Text(item.text)
                 .lineLimit(1)
                 .font(.system(size: 17))
@@ -45,7 +43,6 @@ struct TaskCellView: View {
         }
         .padding(5)
     }
-    
     var body: some View {
         HStack {
             buttonControl

@@ -8,7 +8,7 @@
 import Foundation
 import CocoaLumberjackSwift
 
-extension ToDo_AppApp {
+extension ToDoAppApp {
     func initLogger() {
         DDLog.add(DDOSLogger.sharedInstance)
         let fileLogger: DDFileLogger = DDFileLogger()

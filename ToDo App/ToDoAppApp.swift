@@ -8,11 +8,10 @@
 import SwiftUI
 
 @main
-struct ToDo_AppApp: App {
-    static var idiom : UIUserInterfaceIdiom { 
+struct ToDoAppApp: App {
+    static var idiom: UIUserInterfaceIdiom {
         UIDevice.current.userInterfaceIdiom
     }
-    
     var body: some Scene {
         WindowGroup {
             ContentView()

@@ -16,7 +16,7 @@ class Todos: ObservableObject {
     }
     @Published var countCompleted: Int
     var groupedTasks: [Int: [TodoItem]] {
-        var dict = [Int:[TodoItem]]()
+        var dict = [Int: [TodoItem]]()
         for task in items {
             if let deadline = task.value.deadline {
                 dict[deadline.components, default: []].append(task.value)
@@ -46,16 +46,32 @@ class Todos: ObservableObject {
         items = [:]
         countCompleted = 0
         let id = UUID().uuidString
-        items[id] = TodoItem(id: id, text: "Test 1", importance: .important, deadline: .now.nextDay!, done: false, color: .red, creationDate: .now, lastChangeDate: nil)
-        let id_2 = UUID().uuidString
-        items[id_2] = TodoItem(id: id_2, text: "Test 2", importance: .important, deadline: .distantPast, done: false, color: .blue, creationDate: .now, lastChangeDate: nil)
+        items[id] = TodoItem(
+            id: id,
+            text: "Test 1",
+            importance: .important,
+            deadline: .now.nextDay!,
+            done: false, color: .red,
+            creationDate: .now,
+            lastChangeDate: nil
+        )
+        let id2 = UUID().uuidString
+        items[id2] = TodoItem(
+            id: id2,
+            text: "Test 2",
+            importance: .important,
+            deadline: .distantPast,
+            done: false,
+            color: .blue,
+            creationDate: .now,
+            lastChangeDate: nil
+        )
         for (_, value) in items {
             countCompleted += value.done ? 1 : 0
         }
         // TODO: try to decode from the cache
     }
 }
-
 
 extension Todos {
     var sortedDates: [Int] {
