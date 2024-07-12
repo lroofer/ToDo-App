@@ -28,6 +28,8 @@
 		0A5619562C2F814700E2A5B4 /* Color.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A5619552C2F814700E2A5B4 /* Color.swift */; };
 		0A5619582C2F997300E2A5B4 /* TodoViewLayouts.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A5619572C2F997300E2A5B4 /* TodoViewLayouts.swift */; };
 		0A8CFA582C2FB8DF00A9F549 /* TasksListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A8CFA572C2FB8DF00A9F549 /* TasksListView.swift */; };
+		0AA7FC582C41A87A0094679E /* Service.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0AA7FC572C41A87A0094679E /* Service.swift */; };
+		0AA7FC5A2C41BDB00094679E /* URLSessionTesting.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0AA7FC592C41BDB00094679E /* URLSessionTesting.swift */; };
 		0AB1301C2C22010E00816981 /* FileCache.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0AB1301B2C22010E00816981 /* FileCache.swift */; };
 		0AB1301E2C2285D900816981 /* JsonParsing.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0AB1301D2C2285D900816981 /* JsonParsing.swift */; };
 		0AFBE76C2C388E4A001F1C1F /* CalendarRepresentable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0AFBE76B2C388E4A001F1C1F /* CalendarRepresentable.swift */; };
@@ -84,6 +86,8 @@
 		0A5619552C2F814700E2A5B4 /* Color.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Color.swift; sourceTree = "<group>"; };
 		0A5619572C2F997300E2A5B4 /* TodoViewLayouts.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TodoViewLayouts.swift; sourceTree = "<group>"; };
 		0A8CFA572C2FB8DF00A9F549 /* TasksListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TasksListView.swift; sourceTree = "<group>"; };
+		0AA7FC572C41A87A0094679E /* Service.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Service.swift; sourceTree = "<group>"; };
+		0AA7FC592C41BDB00094679E /* URLSessionTesting.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = URLSessionTesting.swift; sourceTree = "<group>"; };
 		0AB1301B2C22010E00816981 /* FileCache.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FileCache.swift; sourceTree = "<group>"; };
 		0AB1301D2C2285D900816981 /* JsonParsing.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JsonParsing.swift; sourceTree = "<group>"; };
 		0AFBE76B2C388E4A001F1C1F /* CalendarRepresentable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalendarRepresentable.swift; sourceTree = "<group>"; };
@@ -216,6 +220,7 @@
 				0A2C5B552C263A75007D8889 /* AssetsTesting */,
 				0A2C5B522C262A22007D8889 /* TodoItemTests.swift */,
 				0A2C5B5F2C265D47007D8889 /* FileCacheTesting.swift */,
+				0AA7FC592C41BDB00094679E /* URLSessionTesting.swift */,
 			);
 			path = "ToDo AppTests";
 			sourceTree = "<group>";
@@ -264,6 +269,7 @@
 				0AFEA79A2C29A70400A5AED5 /* Extensions */,
 				0A2C5B4F2C26097A007D8889 /* Parsers */,
 				0AFBE7B32C404AFC001F1C1F /* DDLog.swift */,
+				0AA7FC572C41A87A0094679E /* Service.swift */,
 			);
 			path = Daemon;
 			sourceTree = "<group>";
@@ -546,6 +552,7 @@
 				0A5619542C2F4B0500E2A5B4 /* Todos.swift in Sources */,
 				0A5619522C2F399A00E2A5B4 /* RadioButtonView.swift in Sources */,
 				0A8CFA582C2FB8DF00A9F549 /* TasksListView.swift in Sources */,
+				0AA7FC582C41A87A0094679E /* Service.swift in Sources */,
 				0AFBE7AC2C3DD5F6001F1C1F /* Sorting.swift in Sources */,
 				0AB1301C2C22010E00816981 /* FileCache.swift in Sources */,
 				0AFBE7B42C404AFC001F1C1F /* DDLog.swift in Sources */,
@@ -562,6 +569,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				0A2C5B532C262A22007D8889 /* TodoItemTests.swift in Sources */,
+				0AA7FC5A2C41BDB00094679E /* URLSessionTesting.swift in Sources */,
 				0A2C5B602C265D47007D8889 /* FileCacheTesting.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -737,6 +745,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = com.lroof.ToDoApp;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_STRICT_CONCURRENCY = complete;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
@@ -769,6 +778,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = com.lroof.ToDoApp;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_STRICT_CONCURRENCY = complete;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
