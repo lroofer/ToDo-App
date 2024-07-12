@@ -30,6 +30,7 @@
 		0A8CFA582C2FB8DF00A9F549 /* TasksListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A8CFA572C2FB8DF00A9F549 /* TasksListView.swift */; };
 		0AA7FC582C41A87A0094679E /* Service.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0AA7FC572C41A87A0094679E /* Service.swift */; };
 		0AA7FC5A2C41BDB00094679E /* URLSessionTesting.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0AA7FC592C41BDB00094679E /* URLSessionTesting.swift */; };
+		0AA7FC5E2C41E4F90094679E /* RadioButton in Frameworks */ = {isa = PBXBuildFile; productRef = 0AA7FC5D2C41E4F90094679E /* RadioButton */; };
 		0AB1301C2C22010E00816981 /* FileCache.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0AB1301B2C22010E00816981 /* FileCache.swift */; };
 		0AB1301E2C2285D900816981 /* JsonParsing.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0AB1301D2C2285D900816981 /* JsonParsing.swift */; };
 		0AFBE76C2C388E4A001F1C1F /* CalendarRepresentable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0AFBE76B2C388E4A001F1C1F /* CalendarRepresentable.swift */; };
@@ -115,6 +116,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				0AFBE7B02C403A9B001F1C1F /* CocoaLumberjack in Frameworks */,
+				0AA7FC5E2C41E4F90094679E /* RadioButton in Frameworks */,
 				693B3F74C38D252F9E73D77A /* Pods_ToDo_App.framework in Frameworks */,
 				0AFBE7B82C405563001F1C1F /* CocoaLumberjackSwiftLogBackend in Frameworks */,
 				0AFBE7B62C405563001F1C1F /* CocoaLumberjackSwift in Frameworks */,
@@ -330,6 +332,7 @@
 				0AFBE7AF2C403A9B001F1C1F /* CocoaLumberjack */,
 				0AFBE7B52C405563001F1C1F /* CocoaLumberjackSwift */,
 				0AFBE7B72C405563001F1C1F /* CocoaLumberjackSwiftLogBackend */,
+				0AA7FC5D2C41E4F90094679E /* RadioButton */,
 			);
 			productName = "ToDo App";
 			productReference = 0A39EE612C21A95400DD14AE /* ToDo App.app */;
@@ -407,6 +410,7 @@
 			mainGroup = 0A39EE582C21A95400DD14AE;
 			packageReferences = (
 				0AFBE7AE2C403A9A001F1C1F /* XCRemoteSwiftPackageReference "CocoaLumberjack" */,
+				0AA7FC5C2C41E4BC0094679E /* XCLocalSwiftPackageReference "RadioButton" */,
 			);
 			productRefGroup = 0A39EE622C21A95400DD14AE /* Products */;
 			projectDirPath = "";
@@ -903,6 +907,13 @@
 		};
 /* End XCConfigurationList section */
 
+/* Begin XCLocalSwiftPackageReference section */
+		0AA7FC5C2C41E4BC0094679E /* XCLocalSwiftPackageReference "RadioButton" */ = {
+			isa = XCLocalSwiftPackageReference;
+			relativePath = RadioButton;
+		};
+/* End XCLocalSwiftPackageReference section */
+
 /* Begin XCRemoteSwiftPackageReference section */
 		0AFBE7AE2C403A9A001F1C1F /* XCRemoteSwiftPackageReference "CocoaLumberjack" */ = {
 			isa = XCRemoteSwiftPackageReference;
@@ -915,6 +926,11 @@
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
+		0AA7FC5D2C41E4F90094679E /* RadioButton */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 0AA7FC5C2C41E4BC0094679E /* XCLocalSwiftPackageReference "RadioButton" */;
+			productName = RadioButton;
+		};
 		0AFBE7AF2C403A9B001F1C1F /* CocoaLumberjack */ = {
 			isa = XCSwiftPackageProductDependency;
 			package = 0AFBE7AE2C403A9A001F1C1F /* XCRemoteSwiftPackageReference "CocoaLumberjack" */;
