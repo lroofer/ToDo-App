@@ -8,161 +8,55 @@
 import SwiftUI
 
 struct ContentView: View {
-    @Environment(\.colorScheme) var colorScheme
     @StateObject var todos = Todos()
     @State var addNewShow = false
-    @State var showCompleted = false
-    @State var preferImportance = false
-    
-    @State private var selectedTask: String?
-    
+    @State var showCalendarView = false
+    @State private var selectedTask: TodoItem?
+    @State private var columnVisibility = NavigationSplitViewVisibility.all
+    @StateObject var state = CurrentState()
+
     var body: some View {
-        NavigationStack {
-            List(selection: $selectedTask){
-                Section(header: HStack {
-                    Text("Completed - \(todos.countCompleted)")
-                    Spacer()
-//                    Button(showCompleted ? "Hide" : "Show") {
-//                        showCompleted.toggle()
-//                    }
-                }
-                    .font(.callout)
-                    .textCase(.none)
-                ) {
-                    ForEach(todos.items.sorted(by: { a, b in
-                        if preferImportance && a.value.importance != b.value.importance {
-                            return a.value.importance == .important || (a.value.importance == .basic && b.value.importance == .low)
+        // MARK: Specs require split view only for iPad.
+        if ToDoAppApp.idiom != .pad {
+            TasksListView(todos: todos, state: state, addNewShow: $addNewShow,
+                          selectedTask: $selectedTask, showCalendarView: $showCalendarView)
+                .sheet(isPresented: $addNewShow) {
+                    selectedTask = nil
+                } content: {
+                    if selectedTask != nil {
+                        TodoItemView(showView: $addNewShow, selectedTask: $selectedTask, onSave: todos.saveItem) { id in
+                            todos.removeItem(with: id)
                         }
-                        return a.value.createdTime > b.value.createdTime
-                    }), id: \.value) { item in
-                        if !item.value.done || showCompleted {
-                            NavigationLink(value: item.key) {
-                                HStack {
-                                    Button(action: {
-                                        if !item.value.done {
-                                            saveItem(newItem: item.value.getCompleted)
-                                        }
-                                    }, label: {
-                                        RadioButtonView(task: item.value, darkTheme: colorScheme == .dark)
-                                    })
-                                    .buttonBorderShape(.roundedRectangle)
-                                    .buttonStyle(.plain)
-                                    if item.value.importance != .basic {
-                                        Image(systemName: item.value.importance == .important ? "exclamationmark.2" : "arrow.down")
-                                            .foregroundStyle(item.value.importance == .important ? .red : .primary)
-                                    }
-                                    VStack (alignment: .leading) {
-                                        Text(item.value.text)
-                                            .lineLimit(1)
-                                            .font(.system(size: 17))
-                                            .strikethrough(item.value.done)
-                                            .foregroundStyle(item.value.done ? .secondary : .primary)
-                                        if item.value.deadline != nil, !item.value.done {
-                                            HStack {
-                                                Image(systemName: "calendar")
-                                                Text(item.value.deadline!.formatted(date: .abbreviated, time: .omitted))
-                                            }
-                                            .font(.system(size: 13))
-                                            .foregroundColor(.secondary)
-                                        }
-                                    }
-                                    .padding(5)
-                                    if item.value.color != nil {
-                                        Spacer()
-                                        Circle()
-                                            .fill(item.value.color ?? .red)
-                                            .frame(width: 20, height: 20)
-                                    }
-                                }
-                            }
-                            .swipeActions(edge: .leading, allowsFullSwipe: false) {
-                                if !item.value.done{
-                                    Button {
-                                        if !item.value.done {
-                                            saveItem(newItem: item.value.getCompleted)
-                                        }
-                                    } label: {
-                                        RadioButtonView(state: .done)
-                                    }
-                                    .tint(.green)
-                                }
-                            }
-                            .swipeActions(edge: .trailing, allowsFullSwipe: false) {
-                                Button (role: .destructive) {
-                                    todos.removeItem(with: item.key)
-                                } label: {
-                                    Image(systemName: "trash.fill")
-                                }
-                                Menu {
-                                    Text("Unique id: \(item.key)")
-                                    Text("Completed: \(item.value.done)")
-                                } label: {
-                                    Image(systemName: "info.circle.fill")
-                                }
-                            }
-                            .onChange(of: selectedTask, perform: { value in
-                                if value != nil {
-                                    addNewShow = true
-                                }
-                            })
-                        }
-                        
+                    } else {
+                        TodoItemView(showView: $addNewShow,
+                                     selectedTask: $selectedTask,
+                                     onSave: todos.saveItem,
+                                     onDelete: {_ in})
                     }
-    
-                    
-                    Button("New") {
-                        addNewShow.toggle()
-                    }
-                        .foregroundStyle(.secondary)
                 }
-                
-            }
-            .overlay(alignment: .bottom) {
-                Button("+") {
-                    addNewShow.toggle()
-                }
-                .frame(width: 44, height: 44)
-                .font(.largeTitle)
-                .foregroundStyle(.white)
-                .background(.blue)
-                .clipShape(Circle())
-            }
-            .toolbar {
-                ToolbarItem(placement: .topBarTrailing) {
-                    Menu {
-                        Button((showCompleted ? "Hide" : "Show") + " Completed") {
-                            showCompleted.toggle()
-                        }
-                        Menu("Sort by") {
-                            Button("Most Recent") {
-                                preferImportance = false
-                            }
-                            Button("Most important") {
-                                preferImportance = true
-                            }
-                        }
-                    } label: {
-                        Label("Choose category", systemImage: "line.3.horizontal.decrease.circle")
+        } else {
+            NavigationSplitView(columnVisibility: $columnVisibility) {
+                TasksListView(todos: todos, state: state, addNewShow: $addNewShow,
+                              selectedTask: $selectedTask, showCalendarView: $showCalendarView)
+            } detail: {
+                if !addNewShow {
+                    Text("None of the tasks are selected")
+                } else {
+                    if selectedTask != nil {
+                        TodoItemView(showView: $addNewShow,
+                                     selectedTask: $selectedTask,
+                                     onSave: todos.saveItem,
+                                     onDelete: todos.removeItem)
+                    } else {
+                        TodoItemView(showView: $addNewShow,
+                                     selectedTask: $selectedTask,
+                                     onSave: todos.saveItem,
+                                     onDelete: todos.removeItem)
                     }
-                
                 }
             }
-            .navigationTitle("My tasks")
+            .navigationSplitViewStyle(.balanced)
         }
-        .sheet(isPresented: $addNewShow, onDismiss: {
-            selectedTask = nil
-        }) {
-            if let selectedTask, let unpack = todos.items[selectedTask] {
-                TodoItemView(unpack: unpack, onSave: saveItem) { id in
-                    todos.removeItem(with: id)
-                }
-            } else {
-                TodoItemView(onSave: saveItem, onDelete: {_ in})
-            }
-        }
-    }
-    func saveItem(newItem: TodoItem) {
-        todos.setItem(with: newItem.id, value: newItem)
     }
 }
 
