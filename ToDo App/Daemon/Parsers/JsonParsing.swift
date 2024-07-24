@@ -19,6 +19,9 @@ extension TodoItem {
         case createdTime = "created_at"
         case changedTime = "changed_at"
     }
+    enum ParseErrors: Error {
+        case unparsableList
+    }
     /// The method detects the given type and the converts it to the Data format.
     private static func convertToData(json: Any) -> Data? {
         if let json = json as? String {
@@ -37,7 +40,7 @@ extension TodoItem {
         self.text = text
         importance = PriorityChoices.getPriorityFrom(string: getValue(.importance) as? String ?? "")!
         deadline = Date.getDate(fromStringLocale: getValue(.deadline) as? String)
-        guard let completed = Bool.getBool(fromString: getValue(.done) as? String) else {
+        guard let completed = getValue(.done) as? Bool else {
             return nil
         }
         self.done = completed
@@ -76,6 +79,18 @@ extension TodoItem {
     }
     var json: Any {
         return (try? JSONSerialization.data(withJSONObject: dict)) ?? Data()
+    }
+    static func getList(from data: Any) throws -> [TodoItem] {
+        guard let list = data as? [Any] else {
+            throw ParseErrors.unparsableList
+        }
+        var ans = [TodoItem]()
+        for item in list {
+            if let parseItem = item as? [String: Any], let todoItem = TodoItem(dict: parseItem) {
+                ans.append(todoItem)
+            }
+        }
+        return ans
     }
 }
 
