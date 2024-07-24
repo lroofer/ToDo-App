@@ -8,7 +8,7 @@
 import Foundation
 import CocoaLumberjackSwift
 
-class Todos: ObservableObject {
+final class Todos: ObservableObject, @unchecked Sendable {
     @Published private(set) var items = [String: TodoItem]() {
         didSet {
             // TODO: add caching
@@ -42,34 +42,23 @@ class Todos: ObservableObject {
         DDLogDebug("An attempt to create Task with id: \(newItem.id)")
         setItem(with: newItem.id, value: newItem)
     }
+    private func decodeFromCache() async {
+        let network = DefaultNetworkingService()
+        do {
+            let data = try await network.getTasksList()
+            for item in data {
+                setItem(with: item.id, value: item)
+            }
+        } catch {
+            DDLogError("Decoding from cache error: \(error)")
+        }
+    }
     init() {
         items = [:]
         countCompleted = 0
-        let id = UUID().uuidString
-        items[id] = TodoItem(
-            id: id,
-            text: "Test 1",
-            importance: .important,
-            deadline: .now.nextDay!,
-            done: false, color: .red,
-            creationDate: .now,
-            lastChangeDate: nil
-        )
-        let id2 = UUID().uuidString
-        items[id2] = TodoItem(
-            id: id2,
-            text: "Test 2",
-            importance: .important,
-            deadline: .distantPast,
-            done: false,
-            color: .blue,
-            creationDate: .now,
-            lastChangeDate: nil
-        )
-        for (_, value) in items {
-            countCompleted += value.done ? 1 : 0
+        Task.detached { [self] in
+            await decodeFromCache()
         }
-        // TODO: try to decode from the cache
     }
 }
 
