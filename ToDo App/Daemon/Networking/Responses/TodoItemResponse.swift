@@ -25,7 +25,6 @@ struct TodoItemResponse: BasicResponse {
         self.result = item
         self.revision = revision
     }
-    
     let status: String
     let result: any JSONParsable
     let revision: Int
