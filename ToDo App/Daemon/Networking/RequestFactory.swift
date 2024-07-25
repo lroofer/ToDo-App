@@ -26,11 +26,13 @@ struct RequestFactory {
         return request
     }
     func add(taskResponse: BasicResponse, revision: Int) async throws -> URLRequest {
-        var request = baseRequest
+        var request = URLRequest(url: URL(string: "https://hive.mrdekk.ru/todo/list")!)
+        request.setValue( "Bearer \(token)", forHTTPHeaderField: "Authorization")
         request.httpMethod = "POST"
-        request.setValue("X-Last-Known-Revision", forHTTPHeaderField: "\(revision)")
+        request.setValue("\(revision)", forHTTPHeaderField: "X-Last-Known-Revision")
+        DDLogInfo("Creating POST request to create TodoItem with revision: \(revision)")
         do {
-            request.httpBody = try JSONSerialization.data(withJSONObject: taskResponse.result.json)
+            request.httpBody = try JSONSerialization.data(withJSONObject: taskResponse.json)
         } catch {
             DDLogError("JSONSerilization error: \(error.localizedDescription)")
             throw error

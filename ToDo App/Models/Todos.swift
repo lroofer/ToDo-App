@@ -28,11 +28,23 @@ final class Todos: ObservableObject, @unchecked Sendable {
         return dict
     }
     func setItem(with id: String, value: TodoItem) {
+        let isNew = items[id] == nil
         if let done = items[id]?.done {
             countCompleted -= done ? 1 : 0
         }
         items[id] = value
         countCompleted += value.done ? 1 : 0
+        if isNew {
+            DDLogDebug("Attempting to send new item to the server")
+            Task.detached { [self] in
+                do {
+                    try await network.addTask(task: value)
+                    DDLogDebug("Item \(value.id) was added to the server")
+                } catch {
+                    DDLogError("There's been an error: \(error.localizedDescription) with adding the item \(value.id) to the server")
+                }
+            }
+        }
         DDLogDebug("Task with id: \(id) has been updated")
     }
     func removeItem(with id: String) {

@@ -18,6 +18,7 @@ extension TodoItem: JSONParsable {
         case color
         case createdTime = "created_at"
         case changedTime = "changed_at"
+        case lastUpdatedBy = "last_updated_by"
     }
     enum ParseErrors: Error {
         case unparsableList
@@ -85,17 +86,17 @@ extension TodoItem: JSONParsable {
         let setValue = {(identifier: TodoItemStoredFields, value: Any) in object[identifier.rawValue] = value}
         setValue(.id, id)
         setValue(.text, text)
-        if importance != .basic {
-            setValue(.importance, importance.rawValue)
-        }
+        setValue(.importance, importance.rawValue)
         if deadline != nil {
-            setValue(.deadline, deadline!.ISO8601Format())
+            setValue(.deadline, Int64(deadline!.timeIntervalSince1970))
         }
-        setValue(.done, done ? "true" : "false")
-        setValue(.createdTime, createdTime.ISO8601Format())
+        setValue(.done, done)
+        setValue(.createdTime, Int64(createdTime.timeIntervalSince1970))
         if changedTime != nil {
-            setValue(.changedTime, changedTime!.ISO8601Format())
+            setValue(.changedTime, Int64(changedTime!.timeIntervalSince1970))
         }
+        setValue(.lastUpdatedBy, UIDevice.current.identifierForVendor?.uuidString ?? "unknown")
+        setValue(.color, "#000000")
         return object
     }
     static func getList(from data: Any) throws -> [TodoItem] {

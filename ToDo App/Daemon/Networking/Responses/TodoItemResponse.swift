@@ -8,6 +8,21 @@
 import Foundation
 
 struct TodoItemResponse: BasicResponse {
+    let status: String
+    let result: any JSONParsable
+    let revision: Int
+    var json: Any {
+        var object = [String: Any]()
+        object["status"] = status
+        object["element"] = result.json
+        object["revision"] = revision
+        return object
+    }
+    init(status: String, result: TodoItem, revision: Int) {
+        self.status = status
+        self.result = result
+        self.revision = revision
+    }
     init?(from data: Any) {
         guard let dict = data as? [String: Any] else {
             return nil
@@ -24,15 +39,5 @@ struct TodoItemResponse: BasicResponse {
         self.status = status
         self.result = item
         self.revision = revision
-    }
-    let status: String
-    let result: any JSONParsable
-    let revision: Int
-    var json: Any {
-        var object = [String: Any]()
-        object["status"] = status
-        object["element"] = result.json
-        object["revision"] = revision
-        return object
     }
 }
