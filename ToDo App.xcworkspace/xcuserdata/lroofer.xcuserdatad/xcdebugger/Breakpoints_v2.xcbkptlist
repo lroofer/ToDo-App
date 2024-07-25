@@ -116,51 +116,5 @@
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            uuid = "3A728ED0-D1CA-4658-9FA6-07420406B9E4"
-            shouldBeEnabled = "Yes"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "ToDo App/Daemon/Networking/APICaller.swift"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "31"
-            endingLineNumber = "31"
-            landmarkName = "perform(request:)"
-            landmarkType = "7">
-            <Locations>
-               <Location
-                  uuid = "3A728ED0-D1CA-4658-9FA6-07420406B9E4 - 836ffc4348a5e20d"
-                  shouldBeEnabled = "Yes"
-                  ignoreCount = "0"
-                  continueAfterRunningActions = "No"
-                  symbolName = "(3) suspend resume partial function for ToDo_App.APICaller.perform(request: Foundation.URLRequest) async throws -&gt; ToDo_App.BasicResponse"
-                  moduleName = "ToDo App"
-                  usesParentBreakpointCondition = "Yes"
-                  urlString = "file:///Users/lroofer/Documents/ToDo-App/ToDo%20App/Daemon/Networking/APICaller.swift"
-                  startingColumnNumber = "9223372036854775807"
-                  endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "31"
-                  endingLineNumber = "31">
-               </Location>
-               <Location
-                  uuid = "3A728ED0-D1CA-4658-9FA6-07420406B9E4 - 836ffc4348a5e20d"
-                  shouldBeEnabled = "Yes"
-                  ignoreCount = "0"
-                  continueAfterRunningActions = "No"
-                  symbolName = "(3) suspend resume partial function for ToDo_App.APICaller.perform(request: Foundation.URLRequest) async throws -&gt; ToDo_App.BasicResponse"
-                  moduleName = "ToDo App"
-                  usesParentBreakpointCondition = "Yes"
-                  urlString = "file:///Users/lroofer/Documents/ToDo-App/ToDo%20App/Daemon/Networking/APICaller.swift"
-                  startingColumnNumber = "9223372036854775807"
-                  endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "31"
-                  endingLineNumber = "31">
-               </Location>
-            </Locations>
-         </BreakpointContent>
-      </BreakpointProxy>
    </Breakpoints>
 </Bucket>

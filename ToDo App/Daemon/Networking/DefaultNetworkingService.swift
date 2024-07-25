@@ -14,9 +14,8 @@ class DefaultNetworkingService: NetworkingService {
     }
     private let requestFactory = RequestFactory()
     private let caller = APICaller()
-    
     func getTasksList() async throws -> TodoItemList {
-        var request = try requestFactory.getAllRequest()
+        let request = try requestFactory.getAllRequest()
         let response = try await caller.perform(request: request)
         guard let list = response.result as? TodoItemList else {
             throw RequestErrors.unparsableResult

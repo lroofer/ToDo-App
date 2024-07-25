@@ -16,12 +16,10 @@ struct RequestFactory {
         request.setValue( "Bearer \(token)", forHTTPHeaderField: "Authorization")
         return request
     }
-    
     init(url: URL = URL(string: "https://hive.mrdekk.ru/todo/list")!, token: String = "Elurin") {
         self.url = url
         self.token = token
     }
-    
     func getAllRequest() throws -> URLRequest {
         var request = baseRequest
         request.httpMethod = "GET"
