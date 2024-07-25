@@ -33,8 +33,13 @@
 		0AA7FC582C41A87A0094679E /* Service.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0AA7FC572C41A87A0094679E /* Service.swift */; };
 		0AA7FC5A2C41BDB00094679E /* URLSessionTesting.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0AA7FC592C41BDB00094679E /* URLSessionTesting.swift */; };
 		0AA7FC5E2C41E4F90094679E /* RadioButton in Frameworks */ = {isa = PBXBuildFile; productRef = 0AA7FC5D2C41E4F90094679E /* RadioButton */; };
-		0AABB47B2C50EC9800EAE662 /* APICaller.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0AABB47A2C50EC9800EAE662 /* APICaller.swift */; };
 		0AABB47E2C50EE5C00EAE662 /* TodoListResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0AABB47D2C50EE5C00EAE662 /* TodoListResponse.swift */; };
+		0AABB4802C51900C00EAE662 /* TodoItemResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0AABB47F2C51900C00EAE662 /* TodoItemResponse.swift */; };
+		0AABB4822C51A42F00EAE662 /* RequestFactory.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0AABB4812C51A42F00EAE662 /* RequestFactory.swift */; };
+		0AABB4862C51A68D00EAE662 /* JSONParsable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0AABB4852C51A68D00EAE662 /* JSONParsable.swift */; };
+		0AABB4882C5276E000EAE662 /* TodoItemList.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0AABB4872C5276E000EAE662 /* TodoItemList.swift */; };
+		0AABB48A2C52780200EAE662 /* BasicResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0AABB4892C52780200EAE662 /* BasicResponse.swift */; };
+		0AABB48C2C527A3C00EAE662 /* APICaller.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0AABB48B2C527A3C00EAE662 /* APICaller.swift */; };
 		0AB1301C2C22010E00816981 /* FileCache.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0AB1301B2C22010E00816981 /* FileCache.swift */; };
 		0AB1301E2C2285D900816981 /* JsonParsing.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0AB1301D2C2285D900816981 /* JsonParsing.swift */; };
 		0AFBE76C2C388E4A001F1C1F /* CalendarRepresentable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0AFBE76B2C388E4A001F1C1F /* CalendarRepresentable.swift */; };
@@ -96,8 +101,13 @@
 		0A9D7DA22C4B79DB00223C6B /* ToDo-App-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = "ToDo-App-Info.plist"; sourceTree = SOURCE_ROOT; };
 		0AA7FC572C41A87A0094679E /* Service.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Service.swift; sourceTree = "<group>"; };
 		0AA7FC592C41BDB00094679E /* URLSessionTesting.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = URLSessionTesting.swift; sourceTree = "<group>"; };
-		0AABB47A2C50EC9800EAE662 /* APICaller.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = APICaller.swift; sourceTree = "<group>"; };
 		0AABB47D2C50EE5C00EAE662 /* TodoListResponse.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TodoListResponse.swift; sourceTree = "<group>"; };
+		0AABB47F2C51900C00EAE662 /* TodoItemResponse.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TodoItemResponse.swift; sourceTree = "<group>"; };
+		0AABB4812C51A42F00EAE662 /* RequestFactory.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RequestFactory.swift; sourceTree = "<group>"; };
+		0AABB4852C51A68D00EAE662 /* JSONParsable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JSONParsable.swift; sourceTree = "<group>"; };
+		0AABB4872C5276E000EAE662 /* TodoItemList.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TodoItemList.swift; sourceTree = "<group>"; };
+		0AABB4892C52780200EAE662 /* BasicResponse.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BasicResponse.swift; sourceTree = "<group>"; };
+		0AABB48B2C527A3C00EAE662 /* APICaller.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = APICaller.swift; sourceTree = "<group>"; };
 		0AB1301B2C22010E00816981 /* FileCache.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FileCache.swift; sourceTree = "<group>"; };
 		0AB1301D2C2285D900816981 /* JsonParsing.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JsonParsing.swift; sourceTree = "<group>"; };
 		0AFBE76B2C388E4A001F1C1F /* CalendarRepresentable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalendarRepresentable.swift; sourceTree = "<group>"; };
@@ -157,6 +167,7 @@
 				0A39EE8E2C21AC1700DD14AE /* TodoItem.swift */,
 				0AB1301B2C22010E00816981 /* FileCache.swift */,
 				0A5619532C2F4B0500E2A5B4 /* Todos.swift */,
+				0AABB4872C5276E000EAE662 /* TodoItemList.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -166,6 +177,7 @@
 			children = (
 				0A2C5B502C26098C007D8889 /* CsvParsing.swift */,
 				0AB1301D2C2285D900816981 /* JsonParsing.swift */,
+				0AABB4852C51A68D00EAE662 /* JSONParsable.swift */,
 			);
 			path = Parsers;
 			sourceTree = "<group>";
@@ -261,7 +273,8 @@
 				0AABB47C2C50EE4E00EAE662 /* Responses */,
 				0A9D7D9E2C4B38C000223C6B /* NetworkingService.swift */,
 				0A9D7DA02C4B38D600223C6B /* DefaultNetworkingService.swift */,
-				0AABB47A2C50EC9800EAE662 /* APICaller.swift */,
+				0AABB4812C51A42F00EAE662 /* RequestFactory.swift */,
+				0AABB48B2C527A3C00EAE662 /* APICaller.swift */,
 			);
 			path = Networking;
 			sourceTree = "<group>";
@@ -270,6 +283,8 @@
 			isa = PBXGroup;
 			children = (
 				0AABB47D2C50EE5C00EAE662 /* TodoListResponse.swift */,
+				0AABB47F2C51900C00EAE662 /* TodoItemResponse.swift */,
+				0AABB4892C52780200EAE662 /* BasicResponse.swift */,
 			);
 			path = Responses;
 			sourceTree = "<group>";
@@ -579,11 +594,16 @@
 				0A39EE672C21A95400DD14AE /* ContentView.swift in Sources */,
 				0AFBE76C2C388E4A001F1C1F /* CalendarRepresentable.swift in Sources */,
 				0AFBE76E2C388ECD001F1C1F /* CalendarView.swift in Sources */,
+				0AABB48C2C527A3C00EAE662 /* APICaller.swift in Sources */,
 				0AB1301E2C2285D900816981 /* JsonParsing.swift in Sources */,
 				0A5619582C2F997300E2A5B4 /* TodoViewLayouts.swift in Sources */,
+				0AABB4862C51A68D00EAE662 /* JSONParsable.swift in Sources */,
 				0A5619562C2F814700E2A5B4 /* Color.swift in Sources */,
 				0A39EE8F2C21AC1700DD14AE /* TodoItem.swift in Sources */,
+				0AABB4822C51A42F00EAE662 /* RequestFactory.swift in Sources */,
+				0AABB48A2C52780200EAE662 /* BasicResponse.swift in Sources */,
 				0A5619542C2F4B0500E2A5B4 /* Todos.swift in Sources */,
+				0AABB4882C5276E000EAE662 /* TodoItemList.swift in Sources */,
 				0A5619522C2F399A00E2A5B4 /* RadioButtonView.swift in Sources */,
 				0A8CFA582C2FB8DF00A9F549 /* TasksListView.swift in Sources */,
 				0AA7FC582C41A87A0094679E /* Service.swift in Sources */,
@@ -595,10 +615,10 @@
 				0A9D7D9F2C4B38C000223C6B /* NetworkingService.swift in Sources */,
 				0A39EE652C21A95400DD14AE /* ToDoAppApp.swift in Sources */,
 				0AFEA7992C29A65500A5AED5 /* TodoItemView.swift in Sources */,
-				0AABB47B2C50EC9800EAE662 /* APICaller.swift in Sources */,
 				0A2C5B512C260999007D8889 /* CsvParsing.swift in Sources */,
 				0AFEA79C2C29A71100A5AED5 /* Date.swift in Sources */,
 				0AABB47E2C50EE5C00EAE662 /* TodoListResponse.swift in Sources */,
+				0AABB4802C51900C00EAE662 /* TodoItemResponse.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

@@ -20,7 +20,7 @@ class FileCache {
         }
         tasks = [String: TodoItem]()
         for dataObject in jsonObject {
-            if let item = TodoItem(dict: dataObject) {
+            if let item = TodoItem(from: dataObject) {
                 tasks[item.id] = item
             }
         }
