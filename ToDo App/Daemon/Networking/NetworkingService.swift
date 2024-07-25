@@ -8,8 +8,5 @@
 import Foundation
 
 protocol NetworkingService {
-    var token: String { get }
-    var url: String { get }
-    
-    func getTasksList() async throws -> [TodoItem]
+    func getTasksList() async throws -> TodoItemList
 }

@@ -8,7 +8,7 @@
 import Foundation
 import SwiftUI
 
-extension TodoItem {
+extension TodoItem: JSONParsable {
     enum TodoItemStoredFields: String {
         case id
         case text
@@ -30,7 +30,10 @@ extension TodoItem {
         return json as? Data
     }
     /// Generates a new task from the dictionary of values.
-    init? (dict: [String: Any]) {
+    init? (from data: Any) {
+        guard let dict = data as? [String: Any] else {
+            return nil
+        }
         let getValue = { (identifier: TodoItemStoredFields) in dict[identifier.rawValue]
         }
         id = (getValue(.id) as? String) ?? UUID().uuidString
@@ -57,7 +60,7 @@ extension TodoItem {
               let jsonObject = try? JSONSerialization.jsonObject(with: jsonData) as? [String: Any] else {
             return nil
         }
-        return TodoItem(dict: jsonObject)
+        return TodoItem(from: jsonObject)
     }
     var dict: [String: Any] {
         var object = [String: Any]()
@@ -78,7 +81,22 @@ extension TodoItem {
         return object
     }
     var json: Any {
-        return (try? JSONSerialization.data(withJSONObject: dict)) ?? Data()
+        var object = [String: Any]()
+        let setValue = {(identifier: TodoItemStoredFields, value: Any) in object[identifier.rawValue] = value}
+        setValue(.id, id)
+        setValue(.text, text)
+        if importance != .basic {
+            setValue(.importance, importance.rawValue)
+        }
+        if deadline != nil {
+            setValue(.deadline, deadline!.ISO8601Format())
+        }
+        setValue(.done, done ? "true" : "false")
+        setValue(.createdTime, createdTime.ISO8601Format())
+        if changedTime != nil {
+            setValue(.changedTime, changedTime!.ISO8601Format())
+        }
+        return object
     }
     static func getList(from data: Any) throws -> [TodoItem] {
         guard let list = data as? [Any] else {
@@ -86,7 +104,7 @@ extension TodoItem {
         }
         var ans = [TodoItem]()
         for item in list {
-            if let parseItem = item as? [String: Any], let todoItem = TodoItem(dict: parseItem) {
+            if let parseItem = item as? [String: Any], let todoItem = TodoItem(from: parseItem) {
                 ans.append(todoItem)
             }
         }

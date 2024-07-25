@@ -2,26 +2,35 @@
 //  APICaller.swift
 //  ToDo App
 //
-//  Created by Егор Колобаев on 24.07.2024.
+//  Created by Егор Колобаев on 25.07.2024.
 //
 
 import Foundation
-import CocoaLumberjackSwift
 
 struct APICaller {
-    private let baseURL: URL
-    private let token: String
-    private let pathComponent = "list"
-    
-    init(baseURL: URL = URL(string: "https://hive.mrdekk.ru/todo/")!, token: String = "Elurin") {
-        self.baseURL = baseURL
-        self.token = token
-        DDLogInfo("APICaller initialized with baseURL: \(baseURL) and token: \(token)")
+    enum NetworkResponseErrors: Error {
+        case unvalidURL(url: String)
+        case unvalidResponseFromTheServer
+        case unsuccessStatusCode(code: Int)
+        case undetectableData
     }
-    
-    private var url: URL {
-        return baseURL.appendingPathComponent(pathComponent)
+    func perform(request: URLRequest) async throws -> BasicResponse {
+        let (data, response) = try await URLSession.shared.data(for: request)
+        guard let httpResponse = response as? HTTPURLResponse else {
+            throw NetworkResponseErrors.unvalidResponseFromTheServer
+        }
+        if httpResponse.statusCode < 200 || httpResponse.statusCode >= 300 {
+            throw NetworkResponseErrors.unsuccessStatusCode(code: httpResponse.statusCode)
+        }
+        guard let responseJSON = (try JSONSerialization.jsonObject(with: data)) as? [String: Any] else {
+            throw NetworkResponseErrors.undetectableData
+        }
+        if responseJSON.keys.contains("list"), let response = TodoListResponse(from: responseJSON) {
+            return response
+        }
+        if let response = TodoItemResponse(from: responseJSON) {
+            return response
+        }
+        throw NetworkResponseErrors.undetectableData
     }
-    
-    
 }

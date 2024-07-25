@@ -15,6 +15,7 @@ final class Todos: ObservableObject, @unchecked Sendable {
         }
     }
     @Published var countCompleted: Int
+    private let network: NetworkingService
     var groupedTasks: [Int: [TodoItem]] {
         var dict = [Int: [TodoItem]]()
         for task in items {
@@ -43,10 +44,9 @@ final class Todos: ObservableObject, @unchecked Sendable {
         setItem(with: newItem.id, value: newItem)
     }
     private func decodeFromCache() async {
-        let network = DefaultNetworkingService()
         do {
             let data = try await network.getTasksList()
-            for item in data {
+            for item in data.tasks {
                 setItem(with: item.id, value: item)
             }
         } catch {
@@ -56,6 +56,7 @@ final class Todos: ObservableObject, @unchecked Sendable {
     init() {
         items = [:]
         countCompleted = 0
+        network = DefaultNetworkingService()
         Task.detached { [self] in
             await decodeFromCache()
         }
