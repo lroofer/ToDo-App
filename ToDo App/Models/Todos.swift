@@ -11,6 +11,7 @@ import CocoaLumberjackSwift
 final class Todos: ObservableObject, @unchecked Sendable {
     @Published private(set) var items = [String: TodoItem]()
     @Published var countCompleted: Int
+    private var isDirty = false
     private let network: NetworkingService
     var groupedTasks: [Int: [TodoItem]] {
         var dict = [Int: [TodoItem]]()
@@ -24,6 +25,9 @@ final class Todos: ObservableObject, @unchecked Sendable {
         return dict
     }
     func setItem(with id: String, value: TodoItem, decoding: Bool = false) {
+        if isDirty {
+            fetchWithServer()
+        }
         let isNew = items[id] == nil
         if let done = items[id]?.done {
             countCompleted -= done ? 1 : 0
@@ -44,11 +48,15 @@ final class Todos: ObservableObject, @unchecked Sendable {
                 }
             } catch {
                 DDLogError("There's been an error: \(error) with adding the item \(value.id) to the server")
+                isDirty = true
             }
         }
         DDLogDebug("Task with id: \(id) has been updated")
     }
     func removeItem(with id: String) {
+        if isDirty {
+            fetchWithServer()
+        }
         DDLogDebug("""
                    Task with id: \(id) has been removed locally
                    Sending a request to the server to delete it
@@ -59,6 +67,7 @@ final class Todos: ObservableObject, @unchecked Sendable {
                 DDLogDebug("Item \(id) has been deleted")
             } catch {
                 DDLogError("There's been an error: \(error) with deleting the item \(id) to the server")
+                isDirty = true
             }
             await fetchList()
         }
@@ -72,6 +81,21 @@ final class Todos: ObservableObject, @unchecked Sendable {
         items = [String: TodoItem]()
         countCompleted = 0
         await decodeFromCache()
+    }
+    private func fetchWithServer() {
+        isDirty = false
+        /*Task.detached { [self] in
+            do {
+                var current = [TodoItem]()
+                for task in items.values {
+                    current.append(task)
+                }
+                let data = try await network.fetchList(todos: TodoItemList(tasks: current))
+                DDLogInfo("Got \(data.tasks.count) tasks")
+            } catch {
+                DDLogInfo("Failed to fetch")
+            }
+        }*/
     }
     private func decodeFromCache() async {
         do {
