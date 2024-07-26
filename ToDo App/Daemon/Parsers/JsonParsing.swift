@@ -43,7 +43,11 @@ extension TodoItem: JSONParsable {
         }
         self.text = text
         importance = PriorityChoices.getPriorityFrom(string: getValue(.importance) as? String ?? "")!
-        deadline = Date.getDate(fromStringLocale: getValue(.deadline) as? String)
+        if let deadlineTime = getValue(.deadline) as? Int64 {
+            deadline = Date(timeIntervalSince1970: .init(deadlineTime))
+        } else {
+            deadline = nil
+        }
         guard let completed = getValue(.done) as? Bool else {
             return nil
         }
@@ -53,8 +57,16 @@ extension TodoItem: JSONParsable {
         } else {
             self.color = nil
         }
-        createdTime = Date.getDate(fromStringLocale: getValue(.createdTime) as? String) ?? Date.now
-        changedTime = Date.getDate(fromStringLocale: getValue(.changedTime) as? String)
+        if let createdTimeInterval = getValue(.createdTime) as? Int64 {
+            createdTime = Date(timeIntervalSince1970: .init(createdTimeInterval))
+        } else {
+            createdTime = .now
+        }
+        if let changedTimeInterval = getValue(.changedTime) as? Int64 {
+            changedTime = Date(timeIntervalSince1970: .init(changedTimeInterval))
+        } else {
+            changedTime = nil
+        }
     }
     static func parse(json: Any) -> TodoItem? {
         guard let jsonData = convertToData(json: json),
@@ -96,7 +108,7 @@ extension TodoItem: JSONParsable {
             setValue(.changedTime, Int64(changedTime!.timeIntervalSince1970))
         }
         setValue(.lastUpdatedBy, UIDevice.current.identifierForVendor?.uuidString ?? "unknown")
-        setValue(.color, "#000000")
+        setValue(.color, color?.toHex() ?? "")
         return object
     }
     static func getList(from data: Any) throws -> [TodoItem] {

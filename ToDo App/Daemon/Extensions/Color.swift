@@ -59,13 +59,13 @@ extension Color {
         }
 
         if alpha != Float(1.0) {
-            return String(format: "%02lX%02lX%02lX%02lX",
+            return "#" + String(format: "%02lX%02lX%02lX%02lX",
                           lroundf(red * 255),
                           lroundf(green * 255),
                           lroundf(blue * 255),
                           lroundf(alpha * 255))
         } else {
-            return String(format: "%02lX%02lX%02lX", lroundf(red * 255), lroundf(green * 255), lroundf(blue * 255))
+            return "#" + String(format: "%02lX%02lX%02lX", lroundf(red * 255), lroundf(green * 255), lroundf(blue * 255))
         }
     }
 }

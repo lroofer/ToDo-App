@@ -18,6 +18,7 @@ class DefaultNetworkingService: NetworkingService {
     private var lastKnownRevision = 0
     func getTasksList() async throws -> TodoItemList {
         let request = try requestFactory.getAllRequest()
+        log(request: request)
         let response = try await caller.perform(request: request, session: session)
         lastKnownRevision = response.revision
         guard let list = response.result as? TodoItemList else {
@@ -28,7 +29,36 @@ class DefaultNetworkingService: NetworkingService {
     func addTask(task: TodoItem) async throws {
         let requestData = TodoItemResponse(status: "ok", result: task, revision: lastKnownRevision)
         let request = try await requestFactory.add(taskResponse: requestData, revision: lastKnownRevision)
+        log(request: request, for: "Adding item \(task.id)")
         let response = try await caller.perform(request: request, session: session)
+        lastKnownRevision = response.revision
         // TODO: Check for the completion.
+    }
+    func deleteTask(taskID: String) async throws {
+        let request = try await requestFactory.remove(taskID: taskID, revision: lastKnownRevision)
+        log(request: request, for: "Delete item \(taskID)")
+        let response = try await caller.perform(request: request, session: session)
+        lastKnownRevision = response.revision
+    }
+}
+
+fileprivate extension DefaultNetworkingService {
+    func log(request: URLRequest, for description: String = "NONE") {
+        var body: String = "None"
+        if let httpBody = request.httpBody {
+            if httpBody.count <= 200 {
+                body = String(data: httpBody, encoding: .utf8) ?? "ENCRYPTED"
+            } else {
+                body = "\(httpBody.count) bytes"
+            }
+        }
+        DDLogInfo("""
+            Got request with task: \(description)
+            ------------------------------------
+            URL: \(request.url?.absoluteString ?? "<None>")
+            httpMethod: \(request.httpMethod ?? "<None>")
+            httpBody: \(body)
+            headers: \(request.allHTTPHeaderFields ?? "NO")
+        """)
     }
 }
