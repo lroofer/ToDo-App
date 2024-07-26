@@ -27,8 +27,7 @@ class DefaultNetworkingService: NetworkingService {
         return list
     }
     func addTask(task: TodoItem) async throws {
-        let requestData = TodoItemResponse(status: "ok", result: task, revision: lastKnownRevision)
-        let request = try await requestFactory.add(taskResponse: requestData, revision: lastKnownRevision)
+        let request = try await requestFactory.add(taskResponse: request(for: task), revision: lastKnownRevision)
         log(request: request, for: "Adding item \(task.id)")
         let response = try await caller.perform(request: request, session: session)
         lastKnownRevision = response.revision
@@ -37,6 +36,12 @@ class DefaultNetworkingService: NetworkingService {
     func deleteTask(taskID: String) async throws {
         let request = try await requestFactory.remove(taskID: taskID, revision: lastKnownRevision)
         log(request: request, for: "Delete item \(taskID)")
+        let response = try await caller.perform(request: request, session: session)
+        lastKnownRevision = response.revision
+    }
+    func updateTask(taskID: String, task: TodoItem) async throws {
+        let request = try await requestFactory.updateItem(taskID: taskID, taskResponse: request(for: task), revision: lastKnownRevision)
+        log(request: request, for: "Updating item \(task.id)")
         let response = try await caller.perform(request: request, session: session)
         lastKnownRevision = response.revision
     }
@@ -60,5 +65,11 @@ fileprivate extension DefaultNetworkingService {
             httpBody: \(body)
             headers: \(request.allHTTPHeaderFields ?? "NO")
         """)
+    }
+}
+
+fileprivate extension DefaultNetworkingService {
+    func request(for task: TodoItem) -> TodoItemResponse {
+        TodoItemResponse(status: "ok", result: task, revision: lastKnownRevision)
     }
 }

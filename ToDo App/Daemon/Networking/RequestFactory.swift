@@ -11,13 +11,14 @@ import CocoaLumberjackSwift
 struct RequestFactory {
     private let url: URL
     private let token: String
-    private func baseRequest(with method: String, revision: Int? = nil, adding component: String? = nil) -> URLRequest {
+    private func baseRequest(with method: String, revision: Int? = nil, adding component: String? = nil, httpBody: Data? = nil) -> URLRequest {
         var parseURL = url
         if let component {
             parseURL = parseURL.appendingPathComponent(component)
         }
         var request = URLRequest(url: parseURL)
         request.httpMethod = method
+        request.httpBody = httpBody
         request.setValue( "Bearer \(token)", forHTTPHeaderField: "Authorization")
         if let revision {
             request.setValue("\(revision)", forHTTPHeaderField: "X-Last-Known-Revision")
@@ -32,14 +33,22 @@ struct RequestFactory {
         baseRequest(with: "GET")
     }
     func add(taskResponse: BasicResponse, revision: Int) async throws -> URLRequest {
-        var request = baseRequest(with: "POST", revision: revision)
         do {
-            request.httpBody = try JSONSerialization.data(withJSONObject: taskResponse.json)
+            let httpBody = try JSONSerialization.data(withJSONObject: taskResponse.json)
+            return baseRequest(with: "POST", revision: revision, httpBody: httpBody)
         } catch {
             DDLogError("JSONSerilization error: \(error)")
             throw error
         }
-        return request
+    }
+    func updateItem(taskID: String, taskResponse: BasicResponse, revision: Int) async throws -> URLRequest {
+        do {
+            let httpBody = try JSONSerialization.data(withJSONObject: taskResponse.json)
+            return baseRequest(with: "PUT", revision: revision, adding: taskID, httpBody: httpBody)
+        } catch {
+            DDLogError("Can't encrypt the item \(taskID): \(error)")
+            throw error
+        }
     }
     func remove(taskID: String, revision: Int) async throws -> URLRequest {
         baseRequest(with: "DELETE", revision: revision, adding: taskID)
