@@ -17,20 +17,22 @@ struct APICaller {
     }
     func perform(request: URLRequest, session: URLSession) async throws -> BasicResponse {
         let (data, response) = try await session.data(for: request)
-        DDLogDebug("\(String(data: request.httpBody ?? Data(), encoding: .utf8) ?? "")")
-        DDLogDebug("\(request.allHTTPHeaderFields ?? "NONE")")
         guard let httpResponse = response as? HTTPURLResponse else {
             throw NetworkResponseErrors.invalidResponseFromTheServer
         }
-        DDLogDebug("\(httpResponse.statusCode)")
+        DDLogDebug("Got: \(httpResponse.statusCode) status code")
         if httpResponse.statusCode < 200 || httpResponse.statusCode >= 300 {
             throw NetworkResponseErrors.unsuccessStatusCode(code: httpResponse.statusCode)
         }
-        DDLogDebug("\(String(data: data, encoding: .utf8) ?? "s")")
+        if data.count < 300 {
+            DDLogDebug("Data: \(String(data: data, encoding: .utf8) ?? "<Encrypted>")")
+        } else {
+            DDLogDebug("Got too much data in response: \(data.count) bytes")
+        }
         guard let responseJSON = (try? JSONSerialization.jsonObject(with: data)) as? [String: Any] else {
             throw NetworkResponseErrors.undetectableData
         }
-        DDLogDebug("\(responseJSON)")
+        DDLogDebug("Got json: \(responseJSON)")
         if responseJSON.keys.contains("list"), let response = TodoListResponse(from: responseJSON) {
             return response
         }
