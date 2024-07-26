@@ -20,6 +20,9 @@ struct TodoItemList: JSONParsable {
         }
         tasks = ans
     }
+    init (tasks: [TodoItem]) {
+        self.tasks = tasks
+    }
     
     let tasks: [TodoItem]
     var json: Any {

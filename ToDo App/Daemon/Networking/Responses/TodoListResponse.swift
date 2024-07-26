@@ -9,6 +9,21 @@ import Foundation
 import CocoaLumberjackSwift
 
 struct TodoListResponse: BasicResponse {
+    let status: String
+    var result: any JSONParsable
+    let revision: Int
+    var json: Any {
+        var object = [String: Any]()
+        object["status"] = self.status
+        object["list"] = self.result
+        object["revision"] = self.revision
+        return object
+    }
+    init(status: String, result: TodoItemList, revision: Int) {
+        self.status = status
+        self.result = result
+        self.revision = revision
+    }
     init?(from data: Any) {
         guard let dict = data as? [String: Any] else {
             return nil
@@ -26,15 +41,4 @@ struct TodoListResponse: BasicResponse {
         self.result = list
         self.revision = revision
     }
-    var json: Any {
-        var object = [String: Any]()
-        object["status"] = self.status
-        object["list"] = self.result
-        object["revision"] = self.revision
-        return object
-    }
-    
-    let status: String
-    var result: any JSONParsable
-    let revision: Int
 }

@@ -40,6 +40,7 @@ final class Todos: ObservableObject, @unchecked Sendable {
                     DDLogDebug("Updating \(id) task on server")
                     try await network.updateTask(taskID: id, task: value)
                     DDLogDebug("Item \(value.id) was updated on the server")
+                    await fetchList()
                 }
             } catch {
                 DDLogError("There's been an error: \(error) with adding the item \(value.id) to the server")
@@ -59,12 +60,18 @@ final class Todos: ObservableObject, @unchecked Sendable {
             } catch {
                 DDLogError("There's been an error: \(error) with deleting the item \(id) to the server")
             }
+            await fetchList()
         }
         items.removeValue(forKey: id)
     }
     func saveItem(newItem: TodoItem) {
         DDLogDebug("An attempt to create Task with id: \(newItem.id)")
         setItem(with: newItem.id, value: newItem)
+    }
+    private func fetchList() async {
+        items = [String: TodoItem]()
+        countCompleted = 0
+        await decodeFromCache()
     }
     private func decodeFromCache() async {
         do {
