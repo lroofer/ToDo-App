@@ -10,7 +10,7 @@ import CocoaLumberjackSwift
 
 class DefaultNetworkingService: NetworkingService {
     enum RequestErrors: Error {
-        case unparsableResult
+        case unparsableResult, unparsableListOfItems
     }
     private let requestFactory = RequestFactory()
     private let caller = APICaller()
@@ -45,6 +45,16 @@ class DefaultNetworkingService: NetworkingService {
         let response = try await caller.perform(request: request, session: session)
         lastKnownRevision = response.revision
     }
+    func fetchList(todos: TodoItemList) async throws -> TodoItemList {
+        let request = try await requestFactory.fetch(taskListResponse: request(with: todos), revision: lastKnownRevision)
+        log(request: request, for: "Fetching")
+        let response = try await caller.perform(request: request, session: session)
+        lastKnownRevision = response.revision
+        guard let list = response.result as? TodoItemList else {
+            throw RequestErrors.unparsableListOfItems
+        }
+        return list
+    }
 }
 
 fileprivate extension DefaultNetworkingService {
@@ -71,5 +81,8 @@ fileprivate extension DefaultNetworkingService {
 fileprivate extension DefaultNetworkingService {
     func request(for task: TodoItem) -> TodoItemResponse {
         TodoItemResponse(status: "ok", result: task, revision: lastKnownRevision)
+    }
+    func request(with list: TodoItemList) -> TodoListResponse {
+        TodoListResponse(status: "ok", result: list, revision: lastKnownRevision)
     }
 }
