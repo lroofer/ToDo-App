@@ -9,11 +9,7 @@ import Foundation
 import CocoaLumberjackSwift
 
 final class Todos: ObservableObject, @unchecked Sendable {
-    @Published private(set) var items = [String: TodoItem]() {
-        didSet {
-            // TODO: add caching
-        }
-    }
+    @Published private(set) var items = [String: TodoItem]()
     @Published var countCompleted: Int
     private let network: NetworkingService
     var groupedTasks: [Int: [TodoItem]] {
@@ -34,15 +30,19 @@ final class Todos: ObservableObject, @unchecked Sendable {
         }
         items[id] = value
         countCompleted += value.done ? 1 : 0
-        if isNew && !decoding {
-            DDLogDebug("Attempting to send new item to the server")
-            Task.detached { [self] in
-                do {
+        Task.detached { [self] in
+            do {
+                if isNew && !decoding {
+                    DDLogDebug("Attempting to send new item to the server")
                     try await network.addTask(task: value)
                     DDLogDebug("Item \(value.id) was added to the server")
-                } catch {
-                    DDLogError("There's been an error: \(error) with adding the item \(value.id) to the server")
+                } else if !decoding {
+                    DDLogDebug("Updating \(id) task on server")
+                    try await network.updateTask(taskID: id, task: value)
+                    DDLogDebug("Item \(value.id) was updated on the server")
                 }
+            } catch {
+                DDLogError("There's been an error: \(error) with adding the item \(value.id) to the server")
             }
         }
         DDLogDebug("Task with id: \(id) has been updated")
