@@ -7,7 +7,9 @@
 
 import Foundation
 import SwiftUI
+import SwiftData
 
+@Model
 struct TodoItem: Hashable, Identifiable {
     enum PriorityChoices: String {
         case low

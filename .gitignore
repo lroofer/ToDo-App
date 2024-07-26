@@ -127,6 +127,7 @@ iOSInjectionProject/
 !*.xcodeproj/project.pbxproj
 !*.xcodeproj/xcshareddata/
 Breakpoints_v2.xcbkptlist
+*.xcbkptlist
 !*.xcodeproj/project.xcworkspace/
 !*.xcworkspace/contents.xcworkspacedata
 /*.gcno

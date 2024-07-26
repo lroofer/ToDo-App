@@ -6,7 +6,9 @@
 //
 
 import Foundation
+import SwiftData
 
+@Model
 class FileCache {
     private(set) var tasks: [String: TodoItem]
     init () {
