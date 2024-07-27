@@ -55,6 +55,24 @@ class DefaultNetworkingService: NetworkingService {
         }
         return list
     }
+    func getMerged(with cache: TodoItemList) async throws -> TodoItemList {
+        do {
+            let list = try await getTasksList()
+            var dict = [String: TodoItem]()
+            for task in list.tasks {
+                dict[task.id] = task
+            }
+            for task in cache.tasks {
+                if dict[task.id] == nil {
+                    try await addTask(task: task)
+                }
+            }
+            return try await getTasksList()
+        } catch {
+            DDLogError("Network connection error: \(error). Using cache")
+            return cache
+        }
+    }
 }
 
 fileprivate extension DefaultNetworkingService {

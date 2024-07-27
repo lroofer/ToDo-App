@@ -10,8 +10,8 @@ import SwiftUI
 import SwiftData
 
 @Model
-struct TodoItem: Hashable, Identifiable {
-    enum PriorityChoices: String {
+final class TodoItem: Hashable, Identifiable, Sendable {
+    enum PriorityChoices: String, Codable {
         case low
         case basic
         case important
@@ -36,14 +36,14 @@ struct TodoItem: Hashable, Identifiable {
     static func == (lhs: TodoItem, rhs: TodoItem) -> Bool {
         return lhs.id == rhs.id
     }
-    let id: String
+    @Attribute(.unique) let id: String
     let text: String
     let importance: PriorityChoices
     let deadline: Date?
     let done: Bool
-    let color: Color?
-    let createdTime: Date
-    let changedTime: Date?
+    @Transient var color: Color? = nil
+    @Attribute(originalName: "created_at") let createdTime: Date
+    @Attribute(originalName: "changed_at") let changedTime: Date?
     init(id: String?, text: String, importance: PriorityChoices, deadline: Date?, done: Bool,
          color: Color?, creationDate: Date, lastChangeDate: Date?) {
         self.id = id ?? UUID().uuidString
