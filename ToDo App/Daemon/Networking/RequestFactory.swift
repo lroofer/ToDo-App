@@ -55,6 +55,7 @@ struct RequestFactory {
     }
     func fetch(taskListResponse: BasicResponse, revision: Int) async throws -> URLRequest {
         do {
+
             let httpBody = try JSONSerialization.data(withJSONObject: taskListResponse.json)
             return baseRequest(with: "PATCH", revision: revision, httpBody: httpBody)
         } catch {

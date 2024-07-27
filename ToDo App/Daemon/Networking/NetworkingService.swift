@@ -13,4 +13,5 @@ protocol NetworkingService {
     func deleteTask(taskID: String) async throws
     func updateTask(taskID: String, task: TodoItem) async throws
     func fetchList(todos: TodoItemList) async throws -> TodoItemList
+    func getMerged(with: TodoItemList) async throws -> TodoItemList
 }

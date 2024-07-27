@@ -15,7 +15,7 @@ struct TodoListResponse: BasicResponse {
     var json: Any {
         var object = [String: Any]()
         object["status"] = self.status
-        object["list"] = self.result
+        object["list"] = self.result.json
         object["revision"] = self.revision
         return object
     }

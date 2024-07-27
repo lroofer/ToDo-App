@@ -8,46 +8,33 @@
 import Foundation
 import SwiftData
 
-@Model
-class FileCache {
-    private(set) var tasks: [String: TodoItem]
-    init () {
-        tasks = [String: TodoItem]()
-    }
-    /// Load all the tasks from the file.
-    init? (contentsOf url: URL) {
-        guard let jsonData = try? Data(contentsOf: url),
-              let jsonObject = try? JSONSerialization.jsonObject(with: jsonData) as? [[String: Any]] else {
+actor FileCache {
+    private let modelContainer: ModelContainer
+    init? () {
+        let schema = Schema([TodoItem.self])
+        guard let container = try? ModelContainer(for: schema) else {
             return nil
         }
-        tasks = [String: TodoItem]()
-        for dataObject in jsonObject {
-            if let item = TodoItem(from: dataObject) {
-                tasks[item.id] = item
-            }
-        }
+        self.modelContainer = container
     }
-    /// Prepare and encode data to the JSON.
-    private func exportAllData() -> Data? {
-        var data = [[String: Any]]()
-        for (_, element) in tasks {
-            data.append(element.dict)
-        }
-        return try? JSONSerialization.data(withJSONObject: data)
+    @MainActor public func fetchNotCompleted() -> TodoItemList {
+        let fetchDescriptor = FetchDescriptor<TodoItem>(predicate: #Predicate { item in
+            !item.done
+        })
+        return TodoItemList(tasks: (try? modelContainer.mainContext.fetch(fetchDescriptor)) ?? [])
     }
-    func addNew(task: TodoItem) {
-        tasks[task.id] = task
+    @MainActor public func fetch() -> TodoItemList {
+        let fetchDescriptor = FetchDescriptor<TodoItem>(sortBy: [.init(\.createdTime)])
+        return TodoItemList(tasks: (try? modelContainer.mainContext.fetch(fetchDescriptor)) ?? [])
     }
-    func deleteTask(with id: String) -> TodoItem? {
-        let item = tasks[id]
-        if item != nil {
-            tasks.removeValue(forKey: id)
-        }
-        return item
+    @MainActor public func insert(_ todoItem: TodoItem) {
+        modelContainer.mainContext.insert(todoItem)
     }
-    /// Exports encoded data into the given file.
-    func saveAllData(to file: URL) throws {
-        let data = exportAllData() ?? Data()
-        try data.write(to: file)
+    @MainActor public func delete(_ todoItem: TodoItem) {
+        modelContainer.mainContext.delete(todoItem)
     }
+    @MainActor public func update(_ todoItem: TodoItem) {
+        insert(todoItem)
+    }
+    
 }

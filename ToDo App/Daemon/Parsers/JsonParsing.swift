@@ -31,18 +31,18 @@ extension TodoItem: JSONParsable {
         return json as? Data
     }
     /// Generates a new task from the dictionary of values.
-    init? (from data: Any) {
+    convenience init? (from data: Any) {
         guard let dict = data as? [String: Any] else {
             return nil
         }
         let getValue = { (identifier: TodoItemStoredFields) in dict[identifier.rawValue]
         }
-        id = (getValue(.id) as? String) ?? UUID().uuidString
+        let id = (getValue(.id) as? String) ?? UUID().uuidString
         guard let text = getValue(.text) as? String else {
             return nil
         }
-        self.text = text
-        importance = PriorityChoices.getPriorityFrom(string: getValue(.importance) as? String ?? "")!
+        let importance = PriorityChoices.getPriorityFrom(string: getValue(.importance) as? String ?? "")!
+        let deadline: Date?
         if let deadlineTime = getValue(.deadline) as? Int64 {
             deadline = Date(timeIntervalSince1970: .init(deadlineTime))
         } else {
@@ -51,22 +51,26 @@ extension TodoItem: JSONParsable {
         guard let completed = getValue(.done) as? Bool else {
             return nil
         }
-        self.done = completed
+        let done = completed
+        let color: Color?
         if let hex = getValue(.color) as? String {
-            self.color = Color(hex: hex)
+            color = Color(hex: hex)
         } else {
-            self.color = nil
+            color = nil
         }
+        let createdTime: Date
         if let createdTimeInterval = getValue(.createdTime) as? Int64 {
             createdTime = Date(timeIntervalSince1970: .init(createdTimeInterval))
         } else {
             createdTime = .now
         }
+        let changedTime: Date?
         if let changedTimeInterval = getValue(.changedTime) as? Int64 {
             changedTime = Date(timeIntervalSince1970: .init(changedTimeInterval))
         } else {
             changedTime = nil
         }
+        self.init(id: id, text: text, importance: importance, deadline: deadline, done: done, color: color, creationDate: createdTime, lastChangeDate: changedTime)
     }
     static func parse(json: Any) -> TodoItem? {
         guard let jsonData = convertToData(json: json),

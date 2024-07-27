@@ -11,6 +11,7 @@ import CocoaLumberjackSwift
 final class Todos: ObservableObject, @unchecked Sendable {
     @Published private(set) var items = [String: TodoItem]()
     @Published var countCompleted: Int
+    private let cache: FileCache
     private var isDirty = false
     private let network: NetworkingService
     var groupedTasks: [Int: [TodoItem]] {
@@ -24,7 +25,7 @@ final class Todos: ObservableObject, @unchecked Sendable {
         }
         return dict
     }
-    func setItem(with id: String, value: TodoItem, decoding: Bool = false) {
+    @MainActor func setItem(with id: String, value: TodoItem, decoding: Bool = false) {
         if isDirty {
             fetchWithServer()
         }
@@ -33,6 +34,8 @@ final class Todos: ObservableObject, @unchecked Sendable {
             countCompleted -= done ? 1 : 0
         }
         items[id] = value
+        cache.insert(value)
+        DDLogInfo("Added to cache")
         countCompleted += value.done ? 1 : 0
         Task.detached { [self] in
             do {
@@ -44,7 +47,7 @@ final class Todos: ObservableObject, @unchecked Sendable {
                     DDLogDebug("Updating \(id) task on server")
                     try await network.updateTask(taskID: id, task: value)
                     DDLogDebug("Item \(value.id) was updated on the server")
-                    await fetchList()
+                    //await fetchList()
                 }
             } catch {
                 DDLogError("There's been an error: \(error) with adding the item \(value.id) to the server")
@@ -61,19 +64,24 @@ final class Todos: ObservableObject, @unchecked Sendable {
                    Task with id: \(id) has been removed locally
                    Sending a request to the server to delete it
                    """)
+        guard let value = items[id] else {
+            return
+        }
         Task.detached { [self] in
             do {
+                await cache.delete(value)
+                DDLogDebug("Deleted from cache")
                 try await network.deleteTask(taskID: id)
                 DDLogDebug("Item \(id) has been deleted")
             } catch {
                 DDLogError("There's been an error: \(error) with deleting the item \(id) to the server")
                 isDirty = true
             }
-            await fetchList()
+            //await fetchList()
         }
         items.removeValue(forKey: id)
     }
-    func saveItem(newItem: TodoItem) {
+    @MainActor func saveItem(newItem: TodoItem) {
         DDLogDebug("An attempt to create Task with id: \(newItem.id)")
         setItem(with: newItem.id, value: newItem)
     }
@@ -99,9 +107,10 @@ final class Todos: ObservableObject, @unchecked Sendable {
     }
     private func decodeFromCache() async {
         do {
-            let data = try await network.getTasksList()
+            let cachedData = await cache.fetch()
+            let data = try await network.getMerged(with: cachedData)
             for item in data.tasks {
-                setItem(with: item.id, value: item, decoding: true)
+                await setItem(with: item.id, value: item, decoding: true)
             }
         } catch {
             DDLogError("Decoding from cache error: \(error)")
@@ -111,6 +120,7 @@ final class Todos: ObservableObject, @unchecked Sendable {
         items = [:]
         countCompleted = 0
         network = DefaultNetworkingService()
+        cache = FileCache()!
         Task.detached { [self] in
             await decodeFromCache()
         }
