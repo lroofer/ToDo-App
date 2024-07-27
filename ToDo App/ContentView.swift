@@ -18,8 +18,12 @@ struct ContentView: View {
     var body: some View {
         // MARK: Specs require split view only for iPad.
         if ToDoAppApp.idiom != .pad {
-            TasksListView(todos: todos, state: state, addNewShow: $addNewShow,
-                          selectedTask: $selectedTask, showCalendarView: $showCalendarView)
+            VStack {
+                Text("\(selectedTask?.text ?? "<NONE>")")
+                    .font(.system(size: 1))
+                    .hidden()
+                TasksListView(todos: todos, state: state, addNewShow: $addNewShow,
+                              selectedTask: $selectedTask, showCalendarView: $showCalendarView)
                 .sheet(isPresented: $addNewShow) {
                     selectedTask = nil
                 } content: {
@@ -34,6 +38,7 @@ struct ContentView: View {
                                      onDelete: {_ in})
                     }
                 }
+            }
         } else {
             NavigationSplitView(columnVisibility: $columnVisibility) {
                 TasksListView(todos: todos, state: state, addNewShow: $addNewShow,

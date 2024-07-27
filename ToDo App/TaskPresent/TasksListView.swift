@@ -56,7 +56,7 @@ struct TasksListView: View {
                                          darkScheme: colorScheme == .dark,
                                          saveItem: todos.saveItem,
                                          removeItem: todos.removeItem)
-                                .onChange(of: selectedTask) { value in
+                                .onChange(of: selectedTask) { _, value in
                                     if value != nil {
                                         addNewShow = true
                                     }
