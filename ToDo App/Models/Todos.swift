@@ -47,7 +47,7 @@ final class Todos: ObservableObject, @unchecked Sendable {
                     DDLogDebug("Updating \(id) task on server")
                     try await network.updateTask(taskID: id, task: value)
                     DDLogDebug("Item \(value.id) was updated on the server")
-                    //await fetchList()
+                    await fetchList()
                 }
             } catch {
                 DDLogError("There's been an error: \(error) with adding the item \(value.id) to the server")
@@ -77,7 +77,6 @@ final class Todos: ObservableObject, @unchecked Sendable {
                 DDLogError("There's been an error: \(error) with deleting the item \(id) to the server")
                 isDirty = true
             }
-            //await fetchList()
         }
         items.removeValue(forKey: id)
     }
@@ -92,18 +91,13 @@ final class Todos: ObservableObject, @unchecked Sendable {
     }
     private func fetchWithServer() {
         isDirty = false
-        /*Task.detached { [self] in
+        Task.detached { [self] in
             do {
-                var current = [TodoItem]()
-                for task in items.values {
-                    current.append(task)
-                }
-                let data = try await network.fetchList(todos: TodoItemList(tasks: current))
-                DDLogInfo("Got \(data.tasks.count) tasks")
+                _ = try await network.getMerged(with: cache.fetch())
             } catch {
                 DDLogInfo("Failed to fetch")
             }
-        }*/
+        }
     }
     private func decodeFromCache() async {
         do {
